@@ -1,0 +1,69 @@
+﻿@using DRR_PRESENTATION.Services
+@using System.Text.Json
+
+@inject EmpresaService EmpresaService
+@inject IJSRuntime JS
+
+<nav id="mainNav" data-aos="fade-down" data-aos-duration="1000" class="navbar">
+    <div class="navbar-container">
+        <!-- Botón hamburguesa (visible solo en móviles) -->
+        <button id="hamburgerBtn" class="btn-hamburger" onclick="toggleMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+        </button>
+
+        <!-- Logo -->
+        <div class="logo-container" onclick="scrollToSection('inicio')">
+            @if (empresa != null && !string.IsNullOrEmpty(empresa.Logo))
+            {
+                <img id="logo" src="data:image/png;base64,@empresa.Logo" alt="Logo" />
+            }
+        </div>
+
+        <!-- Menú de navegación -->
+        <div id="navMenu" class="nav-menu">
+            <ul>
+                <li><button id="btnInicio" onclick="scrollToSection('inicio')" class="nav-button">Inicio</button></li>
+                <li><button onclick="scrollToSection('objetivo')" class="nav-button">Objetivo</button></li>
+                <li><button onclick="scrollToSection('productos')" class="nav-button">Productos</button></li>
+                <li><button onclick="scrollToSection('registro')" class="nav-button">Registro</button></li>
+                <li><button onclick="scrollToSection('contactanos')" class="nav-button">Contactanos</button></li>
+            </ul>
+        </div>
+
+        <!-- Button cotizar ahora -->
+        @* <button class="btn-agendar" type="button">Idioma</button> *@
+        <button type="submit" class="submit-button">
+            <i class="fa-regular fa-language"></i> <span>Idioma</span>
+        </button>
+    </div>
+</nav>
+
+@code {
+    private DRR_PRESENTATION.Models.Empresa? empresa;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            empresa = await EmpresaService.ObtenerEmpresaAsync();
+
+            if (empresa == null)
+            {
+                await JS.InvokeVoidAsync("console.log", "Datos no encontrado.");
+            }
+            // else
+            // {
+                // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
+                // {
+                //     WriteIndented = true
+                // }));
+            // }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
+        }
+    }
+}

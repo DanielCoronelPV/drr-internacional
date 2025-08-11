@@ -1,0 +1,163 @@
+﻿.clients-slider {
+    padding: 4rem 1rem;
+    font-family: sans-serif;
+}
+
+.slider-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+    .slider-header h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 1.5rem;
+    }
+
+    .slider-header .divider {
+        width: 96px;
+        height: 4px;
+        margin: 0 auto 1.5rem;
+        background: #f9e905;
+        border-radius: 2px;
+    }
+
+    .slider-header p {
+        font-family: 'Montserrat', sans-serif;
+        max-width: 768px;
+        margin: 0 auto;
+        font-size: 1.25rem;
+        color: #4b5563;
+        line-height: 1.75rem;
+    }
+
+.slider-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.slides-container {
+    display: flex;
+    transition: scroll-left 0.5s ease;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.slide {
+    flex: 0 0 auto;
+    padding: 0 0.5rem;
+}
+
+.card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 200px;
+}
+
+.img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: 75%;
+    object-position: center;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+    .img-wrapper img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+.card:hover .img-wrapper img {
+    transform: scale(1.1);
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: #fff;
+    padding: 1.5rem;
+}
+
+    .overlay h3 {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        font-size: 1.25rem;
+        transform: translateY(0.5rem);
+        transition: transform 0.3s ease;
+    }
+
+    .overlay p {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0.25rem 0 0;
+        opacity: 0.9;
+        transform: translateY(1rem);
+        transition: transform 0.3s ease 0.1s;
+    }
+
+.card:hover .overlay h3 {
+    transform: translateY(0);
+}
+
+.card:hover .overlay p {
+    transform: translateY(0);
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255,255,255,0.8);
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 999;
+}
+
+    .nav-btn:disabled {
+        opacity: 0.3;
+        cursor: default;
+    }
+
+.prev-btn {
+    left: 0.5rem;
+}
+
+.next-btn {
+    right: 0.5rem;
+}
+
+.nav-btn:not(:disabled):hover {
+    background: rgba(255,255,255,1);
+}
+
+
+    .slide {
+        width: calc(50% - 1rem);
+    }
+
+
+@media(min-width:1024px) {
+    .slide {
+        width: calc(33.333% - 1rem);
+    }
+}

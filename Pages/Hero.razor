@@ -1,0 +1,104 @@
+﻿@using DRR_PRESENTATION.Services
+@using DRR_PRESENTATION.Models
+@using System.Text.Json
+
+@inject EmpresaService EmpresaService
+
+@page "/"
+@inject IJSRuntime JS
+
+<div class="bg-body">
+
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <section class="bg-hero" id="inicio">
+        <div class="gradient-overlay"></div>
+        <div class="hero-section">
+
+            <div class="hero-content">
+                <!-- Logo -->
+                <h1 class="logo-position">
+                    DRR <span class="logo-span"> Systemas</span>
+                </h1>
+
+                <!-- Title -->
+                <h2 class="title" data-aos="fade-up" data-aos-duration="1000" tabindex="-1">
+                    Con más de <strong>30 años</strong> de trayectoria en el desarrollo de software desde Argentina, nuestra empresa ha sido referente en soluciones tecnológicas para <strong>comercios e industrias.</strong>
+                </h2>
+
+                <h4 class="subtitle" data-aos="fade-up" data-aos-duration="1300">
+                    Hoy, buscamos abrir un nuevo nicho de negocio, generando una interacción comercial entre productores de Argentina, Paraguay, Brasil y Uruguay para el intercambio de productos primarios y agroindustriales, para ello estamos desarrollando un portal B2B (empresa a empresa), adaptado ahora al comercio internacional.
+                </h4>
+            </div>
+
+            <div class="mouse-scroll" aria-label="Scroll a objetivos">
+                <div class="mouse" onclick="scrollToSection('objetivo')">
+                    <div class="wheel"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="objetivo">
+        <Objetivo />
+    </section>
+
+    <section id="productos">
+        <Productos />
+    </section>
+
+    <section id="registro">
+        <Registro />
+    </section>
+
+    @* <section id="clientes">
+        <ClientsSlider />
+    </section> *@
+
+    <section id="contactanos">
+        <Contact />
+    </section>
+
+</div>
+
+<section id="footer">
+    <Footer />
+</section>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("startCounters");
+        }
+    }
+ 
+    private DRR_PRESENTATION.Models.Empresa? empresa;
+
+    protected override async Task OnInitializedAsync()  
+    {  
+        try
+        {
+            empresa = await EmpresaService.ObtenerEmpresaAsync();
+
+            if (empresa == null)
+            {
+                await JS.InvokeVoidAsync("console.log", "Datos no encontrado.");
+            }
+            // else
+            // {
+                // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
+                // {
+                //     WriteIndented = true
+                // }));
+            // }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
+        }
+    }
+}

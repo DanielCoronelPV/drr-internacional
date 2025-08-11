@@ -1,0 +1,90 @@
+﻿<section class="services-section">
+    <div class="services-container">
+        <div class="services-header">
+            <h2>Registro de Socios del Portal</h2>
+            <div class="divider"></div>
+            <p>
+                Únete a nuestra red de socios comerciales y expande tu negocio a nuevos mercados internacionales.
+            </p>
+        </div>
+
+        <div class="additional-services">
+            @foreach (var service in AdditionalServices)
+            {
+                <div class="service-card small">
+                    <div class="icon-title-card">
+                        <div class="icon-wrapper small">
+                            <i class="@service.IconClass"></i>
+                        </div>
+                        <h4>@service.Title</h4>
+                    </div>
+                    <ul class="service-description-list">
+                        @foreach (var item in service.DescriptionItems)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+
+        <!-- CTA -->
+        <div class="cta">
+            <div class="cta-box">
+                <h3>¿Listo para ser parte de nuestra red?</h3>
+                <p>
+                    Facilita la gestión de exportación e impulsa la importación mediante nuestra plataforma especializada en comercio internacional
+                </p>
+                <div class="cta-buttons">
+                    <button onclick="scrollToSection('contactanos')" class="btn-outline">Iniciar Registro</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@code {
+    public class Service
+    {
+        public string IconClass { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public List<string> DescriptionItems { get; set; } = new();
+    }
+
+    private List<Service> AdditionalServices = new()
+    {
+        new Service
+        {
+            IconClass = "fa-regular fa-building",
+            Title = "Información Empresarial",
+            DescriptionItems = new()
+            {
+                "Denominación / Razón Social",
+                "Domicilio (Con Geolocalización)"
+            }
+        },
+        new Service
+        {
+            IconClass = "fas fa-phone",
+            Title = "Contacto",
+            DescriptionItems = new()
+            {
+                "WeChat",
+                "Whatsapp"
+            }
+        },
+        new Service
+        {
+            IconClass = "fa-solid fa-kaaba",
+            Title = "Productos y Servicios",
+            DescriptionItems = new()
+            {
+                "Características de los productos que ofrece",
+                "Listado de Precios",
+                "Capacitación para la venta",
+                "Respaldo y repuestos del producto"
+            }
+        },
+    };
+}

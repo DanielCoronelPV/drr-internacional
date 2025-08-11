@@ -1,0 +1,76 @@
+﻿<section class="about-section">
+    <div class="container">
+        <div class="text-center about-header">
+            <h2>
+                Objetivo
+            </h2>
+            <div class="divider"></div>
+            <p>
+                Facilitar la gestión de exportación e impulsar la importación mediante la representación de empresas en la plataforma, para la cual también estamos buscando incorporar socios de China, ofreciendo la plataforma para conectar directamente con empresas en Latino America y también por una necesidad de nuestros clientes en poder importar desde China.
+            </p>
+        </div>
+
+        <div class="custom-container">
+            <div class="custom-grid">
+                @foreach (var group in CardGroups)
+                {
+                    <div class="card-group">
+                        @foreach (var card in group)
+                        {
+                            <div class="card @card.BorderClass">
+                                <div class="card-content">
+                                    <h3 class="card-title">@card.Title</h3>
+                                    <p class="card-text">@card.Text</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</section>
+
+@code {
+    public class InfoCard
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+        public string BorderClass { get; set; } = string.Empty;
+    }
+
+    public List<List<InfoCard>> CardGroups { get; set; } = new()
+    {
+        new List<InfoCard>
+        {
+            new InfoCard
+            {
+                Title = "Nuestro Equipo",
+                Text = "Contamos con un equipo especializado, que crecerá y evolucionará en paralelo con la plataforma.",
+                BorderClass = "border-primary"
+            },
+            new InfoCard
+            {
+                Title = "Expansión Global",
+                Text = "Buscamos incorporar socios de China, ofreciendo nuestra plataforma para conectar directamente con empresas en Latinoamérica, respondiendo a las necesidades de nuestros clientes.",
+                BorderClass = "border-accent"
+            }
+        },
+        new List<InfoCard>
+        {
+            new InfoCard
+            {
+                Title = "Ubicación Estratégica",
+                Text = "Desde Eldorado, Misiones, Argentina, nuestra ubicación estratégica facilita la interacción comercial con Paraguay, Brasil y Uruguay, optimizando las operaciones regionales.",
+                BorderClass = "border-primary-glow"
+            },
+            new InfoCard
+            {
+                Title = "Logística Adaptada",
+                Text = "Buscamos alianzas estratégicas con empresas del sector logístico, como Zanotelli, para optimizar el transporte y la distribución, asegurando una operatoria ágil y eficiente en toda la cadena de valor.",
+                BorderClass = "border-accent"
+            }
+        }
+    };
+}

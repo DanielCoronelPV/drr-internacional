@@ -1,0 +1,87 @@
+﻿@implements IDisposable
+@inject IJSRuntime JS
+
+<section class="clients-slider" @ref="SliderSection">
+    <div class="slider-header">
+        <h2>Nuestros clientes</h2>
+        <div class="divider"></div>
+        <p>Empresas líderes que confían en nuestros servicios para impulsar su crecimiento</p>
+    </div>
+
+    <div class="slider-wrapper">
+        <button class="nav-btn prev-btn" @onclick="ScrollPrev">‹</button>
+        <div class="slides-container" @ref="SlidesContainer">
+            @foreach (var client in Clients)
+            {
+                <div class="slide">
+                    <div class="card">
+                        <div class="img-wrapper">
+                            <img src="@client.Image" alt="@($"{client.Name} building")" />
+                        </div>
+                        <div class="overlay">
+                            <h3>@client.Name</h3>
+                            <p>@client.Industry</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <button class="nav-btn next-btn" @onclick="ScrollNext">›</button>
+    </div>
+</section>
+
+@code {
+    private ElementReference SliderSection;
+    private ElementReference SlidesContainer;
+    private DotNetObjectReference<ClientsSlider>? selfRef;
+    private Timer? AutoplayTimer;
+
+    private readonly int SlideWidth = 310;
+
+    private class Client
+    {
+        public required string Name { get; set; }
+        public required string Image { get; set; }
+        public required string Industry { get; set; }
+    }
+    private List<Client> Clients = new()
+    {
+        new() { Name="Hut Forestales", Image="https://lh6.googleusercontent.com/da2Fke9hhvElhDc84wjKZpS15-RKIvn2JB_VGqsWulTjMrIgoHS9o59GyPMy_cynZk285-90WJw_52CLmn5qw-BilBdj4nBESNqYJw2z8sRG7DRBjRN3JRGAZzdcI1YkFO0y=w16383", Industry="Productos forestales" },
+        new() { Name="Papelera Mercedes", Image="https://lh4.googleusercontent.com/2R-5TtWYTfYlKgl0Lmc82f9mYEfpa7q72qNVsIWXaVuXH6mJic-dOABuh5YDHLMkJdZsZrMFpJmX-BH-sGMtvD4rRB7a-BowRYmTknR8H1Mtxdskl1LAA-8LE3F29IrJKwJJNcOTZXpoJX9-vvf370e3942QYQ=w1280", Industry="Papelera" },
+        new() { Name="Macovalle S.A.", Image="https://lh3.googleusercontent.com/mpsM0qzxaI3e2QjbZqPafYQxZrmC3ePvmO6FaeieUUPXcnRsoAvkQpLNT1NYhFH5FCyI4oIMAl7HV-sAVmatrEcSjxVcHgRBkVWGL-xTQc4O5H9VR7Ub54sc6sfmrpoKOnaY28U8W6JR8xvY1nvsWTgH86esdA=w1280", Industry="Ferretería" },
+        new() { Name="Total Agroinsumos S.A.S.", Image="https://lh3.googleusercontent.com/5EnA4Uw8mzg9Pt3gEwBIOzK_A358W9zVRL-CL-pAd8GFDpzQN4stmTdb_suHguhDI3dIKhxh09NXuZMbFVgtWnuFHPy--9gOZamBFlTyCJT1eaxkU2CXvx2AXfQglk5Ql05qyM0xjAWY-TboWZCBN3Kvj3oMuAyw_4eJWcOk7gUV3g=w1280", Industry="Agropecuaria" },
+        new() { Name="Supermercado Adelma", Image="https://lh6.googleusercontent.com/s2QlToD_GCcqrWym51Bmtj-TZ0LC-Xy3WPuQLsFt7zkxHvty0GIMRdkrTJWpLTjIYU0FXrl4hBYy9mrL_1n24IPBlPTuTf-1t_Qu9v0u5G4xnm3vp9qj0ErBTcownZutzBNqb34kRtIjvOqDcsF5pwxYUpVW2PSYl645wLBpKb-ZVa8=w1280", Industry="Supermercado" },
+        new() { Name="Hotel Austral", Image="https://lh3.googleusercontent.com/SKLUKgh7oUiC_UgPd8IMIbuaJHtdodB9ZF-vAM1FxB03Gy61qmEq6eLB28cu659Ae5SjKYwuVa4woVJsqBhuSVKjWjpaDghfrFmEixwhj8ogoMcICxmsa0UAUg__yi6z3uzXyM28o_1Nf2gGbOwlXBF_DEJuNA=w1280", Industry="Hoteleria" },
+        new() { Name="Bazar Palermo", Image="https://lh5.googleusercontent.com/OtOfZNUnqwfwxT8LVjyvak3QZDv6wH5E9TxDOoP2J-P9NU6FfhquZbRyqCLoa-zyvXU4hlBv0VXBa3uJXU4aqSNoG7Nv9Mkaz_Mfiu1bFonnqR5e5SpbckFHTSNEo6U2yYXIXsJp_C4c_B32HegXebIEOI_B-WUG8-Dzzuta23uqLA=w1280", Industry="Tiendas y Bazares" },
+        new() { Name="Transmisiones Janssen", Image="https://lh4.googleusercontent.com/TS8XH9LUcFd9U3evKboBSuzFC4K-yQhCeK3a58u55c-2JzgZxeaAIPpeGoVX0_Kexr5D165w_sxuWYsxnFkEnDnnz6_8fzm5YKCCJuJyzDpnnk3fil1vWNpV_YLYO5S_IwhW_Ilu_RzNJeaxwLv25KZkzRG3TxTJKOu_s0cObserXLM=w1280", Industry="Repuestos" },
+        new() { Name="Metalúrgica Waidelich", Image="https://lh4.googleusercontent.com/_CyII_69j4MC9M00EsRid_RP5ILefem8WiZyMSLd-FhZKLAUu1Jn-bTd_JmS2FWg1i1ebFg2Gc3AiuQ2bTPJP3W0MIJ41Ph8gWi51R5m-LTMwwUpETFnW2tPYtI-jBEbbdsI0hs0il8W3vA-81UzERg1yQ1UDtikzysdnZhGWbv3-R8=w1280", Industry="Metalúrgica" },
+        new() { Name="Lubricantes Dorocz", Image="https://lh3.googleusercontent.com/pcNcyrWfKuCmd8cEndUfYIpAdz2Su3S4HWdkkbWchZR2hFCaBw5MNjVCFCp8BOiUiiBXgVimLSOtoVIhd5DVvvuaUiwL_vjlBHEoPXgmiSxMbidZ94v8phLXNO3GmpXnBEk9wEV2QnwAwTnk9UMyH4e2XXFjZDPydwmLxvIb83CMobU=w1280", Industry="Lubricentro" }
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            selfRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("clientsSlider.initDrag", SlidesContainer);
+
+            AutoplayTimer = new Timer(_ => InvokeAsync(ScrollNext), null, 4000, 4000);
+        }
+    }
+
+    private async Task ScrollPrev()
+    {
+        await JS.InvokeVoidAsync("clientsSlider.scroll", SlidesContainer, -SlideWidth);
+    }
+
+    private async Task ScrollNext()
+    {
+        await JS.InvokeVoidAsync("clientsSlider.scroll", SlidesContainer, SlideWidth);
+    }
+
+    public void Dispose()
+    {
+        AutoplayTimer?.Dispose();
+        selfRef?.Dispose();
+    }
+}

@@ -1,0 +1,19 @@
+# Archivos de Visual Studio
+.vs/
+bin/
+obj/
+*.userosscache
+*.sln.docstates
+*.suo
+*.user
+*.config
+*.obj
+*.pdb
+*.bak
+*.log
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+publish/
+dist/ # La carpeta de publicación de Blazor que creamos para GitHub Pages

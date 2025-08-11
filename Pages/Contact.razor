@@ -1,0 +1,222 @@
+﻿@using DRR_PRESENTATION.Services
+@using System.Text.Json
+
+@inject EmpresaService EmpresaService
+
+<section class="contact-section">
+        <div class="contact-header">
+            <h2>Contactanos</h2>
+            <div class="divider"></div>
+            <p>¿Tienes preguntas o necesitas ayuda? Estamos a un mensaje de distancia. ¡Contáctanos hoy mismo!</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="map-component">
+                <div id="map" class="map-placeholder"></div>
+
+                <div class="contact-info-box">
+                    <h3>Información de Contacto</h3>
+                    <div class="info-item">
+                        <div class="icon-box blue"><i class="fas fa-map-pin"></i></div>
+                        <div>
+                            <h4>Dirección</h4>
+                        <p>Ayohuma 490, esquina Mborore al 3202 km 10.  Frente Barrio "Eldorado 3".</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon-box green"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h4>Teléfono</h4>
+                            <p>+@numeroWhatsApp</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon-box purple"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4>Email</h4>
+                                    @if (empresa != null && !string.IsNullOrEmpty(empresa.E_Mail))
+                            { 
+                            <p>@empresa.E_Mail</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon-box orange"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <h4>Horarios</h4>
+                            <p>Lun - Vie: 8:00 - 20:00</p>
+                            <p>Sáb: 8:00 - 12:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3>Envianos un Mensaje</h3>
+                <p>Completa el formulario y nos pondremos en contacto contigo pronto.</p>
+                <EditForm Model="formData" OnValidSubmit="HandleSubmit">
+                    <div class="form-group">
+                        <i class="fas fa-user icon-input"></i>
+                        <InputText class="input" @bind-Value="formData.FullName" placeholder="Nombre Completo" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope icon-input"></i>
+                        <InputText type="email" class="input" @bind-Value="formData.Email" placeholder="Correo Electrónico" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-phone icon-input"></i>
+                        <InputText type="tel" class="input" @bind-Value="formData.Phone" placeholder="Número de Teléfono" required />
+                    </div>
+                    @* <div class="form-group">
+                        <i class="fas fa-tag icon-input"></i>
+                        <InputSelect class="input" @bind-Value="formData.Reason" required>
+                            <option value="">Selecciona un motivo</option>
+                            <option value="consulta-general">Consulta General</option>
+                            <option value="soporte-tecnico">Soporte Técnico</option>
+                            <option value="ventas">Ventas</option>
+                            <option value="colaboracion">Colaboración</option>
+                            <option value="otro">Otro</option>
+                        </InputSelect>
+                    </div>
+                    <div class="form-group dropdown-multi">
+                        <i class="fas fa-cubes icon-input"></i>
+                        <div class="dropdown">
+                            <button class="input dropdown-toggle" @onclick="ToggleDropdown">
+                                @(formData.Modules.Count == 0 ? "Selecciona módulos" : $"Seleccionados: {string.Join(", ", formData.Modules)}")
+                            </button>
+                            @if (isDropdownOpen)
+                            {
+                                <div class="dropdown-menu show">
+                                    @foreach (var modulo in ModulosDisponibles)
+                                    {
+                                        <label class="dropdown-item">
+                                            <input type="checkbox"
+                                                   checked="@formData.Modules.Contains(modulo)"
+                                                   @onchange="() => ToggleModulo(modulo)" />
+                                            @modulo
+                                        </label>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div> *@
+                    <div class="form-group">
+                        <i class="fas fa-comment icon-input"></i>
+                        <InputTextArea class="input textarea" @bind-Value="formData.Message" placeholder="Tu mensaje..." Rows="5" required />
+                    </div>
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-paper-plane"></i> <span>Enviar Mensaje</span>
+                    </button>
+                </EditForm>
+            </div>
+        </div>
+</section>
+
+@code {
+    private DRR_PRESENTATION.Models.Empresa? empresa;
+    [Inject] IJSRuntime? JS { get; set; }
+    private string numeroWhatsApp = "";
+
+    private ContactFormModel formData = new();
+
+    private async void HandleSubmit()
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(formData);
+            using var doc = JsonDocument.Parse(json);
+            var element = doc.RootElement;
+
+            await JS.InvokeVoidAsync("sendEmail", element);
+
+            formData = new();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", "Error al enviar correo:", ex.Message);
+        }
+    }
+
+    public class ContactFormModel
+    {
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        // public string Reason { get; set; } = string.Empty;
+        // public List<string> Modules { get; set; } = new();
+        public string Message { get; set; } = string.Empty;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("setupFab");
+        }
+
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initLeafletMap");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            empresa = await EmpresaService.ObtenerEmpresaAsync();
+
+            if (empresa == null)
+            {
+                await JS.InvokeVoidAsync("console.log", "Datos no encontrados.");
+            }
+            else
+            {
+                // await JS.InvokeVoidAsync("console.log", "Empresa cargada:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
+                // {
+                //     WriteIndented = true
+                // }));
+
+                // Formatear teléfono
+                var telefono = empresa?.telefono ?? "";
+
+                // Eliminar guiones y espacios
+                telefono = telefono.Replace("-", "").Replace(" ", "");
+
+                // Eliminar primer 0
+                if (telefono.StartsWith("0"))
+                    telefono = telefono.Substring(1);
+
+                // Prefijo país Argentina: 549
+                numeroWhatsApp = $"549{telefono}";
+
+                // await JS.InvokeVoidAsync("console.log", $"WhatsApp formateado: {numeroWhatsApp}");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
+        }
+    }
+
+//     private bool isDropdownOpen = false;
+
+//     private List<string> ModulosDisponibles = new()
+// {
+//     "Ventas", "Compras", "Contabilidad", "Stock"
+// };
+
+//     private void ToggleDropdown()
+//     {
+//         isDropdownOpen = !isDropdownOpen;
+//     }
+
+//     private void ToggleModulo(string modulo)
+//     {
+//         if (formData.Modules.Contains(modulo))
+//             formData.Modules.Remove(modulo);
+//         else
+//             formData.Modules.Add(modulo);
+//     }
+}

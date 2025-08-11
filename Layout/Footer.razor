@@ -1,0 +1,133 @@
+﻿@using Microsoft.AspNetCore.Components.Web  
+@using DRR_PRESENTATION.Services
+@using System.Text.Json  
+
+@inject EmpresaService EmpresaService  
+@inject IJSRuntime JS  
+
+<footer class="footer">  
+  <div class="footer-bg-cover"></div>  
+  <div class="footer-top-border"></div>  
+
+  <div class="footer-content container">  
+    <div class="grid-4-cols gap-8 mb-12">  
+      <!-- Marca -->  
+      <div>  
+        <h3 class="footer-brand">  
+          <span class="logo-cont" onclick="scrollToSection('inicio')">  
+            @if (empresa != null && !string.IsNullOrEmpty(empresa.Logo))  
+            {  
+              <img id="logo" src="data:image/png;base64,@empresa.Logo" alt="Logo" />  
+            }  
+          </span>  
+        </h3>
+                <p class="footer-brand-text">30 años de experiencia, ahora conectando Argentina, Paraguay, Brasil, Uruguay y China.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/DRR.Systemas/" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/drrsystemas/?hl=es" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCUCsBcpFKja9bBMaLW7J3cg" class="social-btn"><i class="fab fa-youtube"></i></a>
+                </div>  
+      </div>  
+
+      <!-- Enlaces rápidos -->  
+      <div>  
+        <h4 class="footer-section-title">Enlaces Rápidos</h4>  
+        <ul class="footer-links">  
+          @foreach (var item in MenuItems)  
+          {  
+            <li>  
+              <a href="javascript:void(0);" @onclick="() => ScrollToSection(GetSectionId(item))">  
+                @item  
+              </a>  
+            </li>  
+          }  
+        </ul>  
+      </div>  
+
+      <!-- Contacto -->  
+      <div>  
+        <h4 class="footer-section-title">Contacto</h4>  
+        <div class="footer-contact">
+                    <div><i class="fas fa-map-pin"></i>Ayohuma 490, esquina Mborore al 3202 km 10.  Frente Barrio "Eldorado 3".</div>
+                    <div><i class="fas fa-phone"></i>Llamanos: +@numeroWhatsApp</div>  
+          <div>  
+            <i class="fas fa-envelope"></i>  
+            @if (empresa != null && !string.IsNullOrEmpty(empresa.E_Mail))  
+            {  
+              <p>@empresa.E_Mail</p>  
+            }  
+          </div>  
+        </div>  
+      </div>  
+    </div>  
+
+    <div class="footer-divider"></div>  
+
+    <div class="footer-bottom">  
+      <div class="footer-left">  
+        <span>© 2025 DRR Systemas. Todo los derechos reservados.</span>  
+      </div>  
+      <div class="footer-right">  
+        <a href="#">Políticas de Privacidad</a>  
+      </div>  
+    </div>  
+  </div>  
+
+  <button class="scroll-top-btn" onclick="scrollToSection('inicio')"><i class="fas fa-arrow-up"></i></button>  
+
+  <div class="decor-dot dot-1"></div>  
+  <div class="decor-dot dot-2"></div>  
+</footer>  
+
+@code {  
+
+    private DRR_PRESENTATION.Models.Empresa? empresa;
+    private string numeroWhatsApp = "";  
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)  
+    {  
+        if (firstRender)  
+        {  
+            await JS.InvokeVoidAsync("setupFab");  
+        }  
+    }  
+
+    protected override async Task OnInitializedAsync()  
+    {  
+        try  
+        {  
+            empresa = await EmpresaService.ObtenerEmpresaAsync();  
+
+            if (empresa == null)  
+            {  
+                await JS.InvokeVoidAsync("console.log", "Datos no encontrados.");  
+            }  
+            else  
+            {  
+                var telefono = empresa?.telefono ?? "";  
+                telefono = telefono.Replace("-", "").Replace(" ", "");  
+                if (telefono.StartsWith("0"))  
+                    telefono = telefono.Substring(1);  
+                numeroWhatsApp = $"549{telefono}";  
+            }  
+        }  
+        catch (Exception ex)  
+        {  
+            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);  
+        }  
+    }  
+
+    [Inject] public IJSRuntime JSRuntime { get; set; } = default!;  
+
+    private string[] MenuItems = { "Inicio", "Objetivo", "Productos", "Registro", "Contactanos" };  
+
+    private string GetSectionId(string label)  
+    {  
+        return label.ToLower().Replace(" ", "-");  
+    }  
+
+    private async Task ScrollToSection(string sectionId)  
+    {  
+        await JSRuntime.InvokeVoidAsync("scrollToSection", sectionId);  
+    }  
+}
