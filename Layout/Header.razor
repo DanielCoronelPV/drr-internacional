@@ -34,9 +34,13 @@
 
         <!-- Button cotizar ahora -->
         @* <button class="btn-agendar" type="button">Idioma</button> *@
-        <button type="submit" class="submit-button">
-            <i class="fa-regular fa-language"></i> <span>Idioma</span>
-        </button>
+        @*<button type="submit" class="submit-button">
+                <i class="fa-regular fa-language"></i> <span>Idioma</span>
+            </button>*@
+
+        
+        <Traductor/>
+
     </div>
 </nav>
 
@@ -55,10 +59,10 @@
             }
             // else
             // {
-                // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
-                // {
-                //     WriteIndented = true
-                // }));
+            // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
+            // {
+            //     WriteIndented = true
+            // }));
             // }
         }
         catch (Exception ex)

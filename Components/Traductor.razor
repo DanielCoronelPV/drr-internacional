@@ -1,0 +1,26 @@
+﻿@inject IJSRuntime JS
+
+<div id="google_translate_element"></div>
+
+
+@code {
+    private IJSObjectReference? module;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                module = await JS.InvokeAsync<IJSObjectReference>(
+                    "import", "./js/GoogleTranslateModule.js");
+
+                await module.InvokeVoidAsync("loadGoogleTranslate");
+            }
+            catch (JSException jsEx)
+            {
+                Console.Error.WriteLine($"Error al cargar Google Translate: {jsEx.Message}");
+            }
+        }
+    }
+}
