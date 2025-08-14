@@ -210,46 +210,28 @@ body, html {
     height: 30px;
 }
 
-/*.btn-agendar {
-    display: block;
-    padding: 0.5rem 1.5rem;
-    border-radius: 8px;
-    border: groove 1px #a6b0fb;
-    background: white;
-    color: #393185;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.4s ease !important;
-    cursor: pointer;
-}
-
-    .btn-agendar:hover {
-        background: #a6b0fb;
-    }*/
-
-.submit-button {
+.languaje-button {
     background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: .5rem 1rem;
-    border: 2px solid #4CAF50;
-    color: #4CAF50 !important;
+    padding: .5rem .5rem !important;
+    border: 2px solid #393185 !important;
+    color: #393185 !important;
     border-radius: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
 
-    .submit-button:hover {
-        background: #e4ffe0;
+    .languaje-button:hover {
+        background: rgba(59, 130, 246, 0.2) !important;
     }
 
-    .submit-button span {
+    .languaje-button span {
         margin-left: 0.5rem;
         margin-right: 0.5rem;
-        color: #4CAF50 !important;
+        color: #393185 !important;
     }
 
 .btn-hamburger {
@@ -393,3 +375,67 @@ body, html {
         opacity: 1;
     }
 }
+
+/*Languaje sector*/
+
+.language-selector-container {
+    position: relative;
+    display: inline-block;
+}
+
+.languaje-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem .6rem;
+    border-radius: .6rem;
+    border: 2px solid #393185;
+    background: transparent;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+    /* iconas */
+    .languaje-button .icon-left,
+    .languaje-button .icon-down {
+        transition: transform .25s ease, opacity .25s ease;
+        font-size: 0.9rem;
+    }
+
+    /* estado abierto: animación suave entre icons */
+    .languaje-button.open .icon-left {
+        transform: rotate(-90deg) translateY(-2px);
+        opacity: 0;
+    }
+
+    .languaje-button.open .icon-down {
+        transform: rotate(180deg) translateY(0);
+        opacity: 1;
+    }
+
+/* menu desplegable */
+.language-menu {
+    position: absolute;
+    align-items: center;
+    right: 0;
+    top: calc(100% + 8px);
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: .5rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    list-style: none;
+    padding: 0.25rem 0;
+    margin: 0;
+    min-width: 120px;
+    z-index: 2000;
+}
+
+    .language-menu li {
+        padding: .5rem 1rem;
+        cursor: pointer;
+    }
+
+        .language-menu li:hover {
+            background: rgba(57,49,131,0.06);
+        }

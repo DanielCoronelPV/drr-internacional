@@ -1,12 +1,14 @@
 ﻿@using DRR_PRESENTATION.Services
-@using System.Text.Json
-
+@using DRR_PRESENTATION.Services.Translate
 @inject EmpresaService EmpresaService
 @inject IJSRuntime JS
+@inject TranslateService Loc
+
+@implements IDisposable
 
 <nav id="mainNav" data-aos="fade-down" data-aos-duration="1000" class="navbar">
     <div class="navbar-container">
-        <!-- Botón hamburguesa (visible solo en móviles) -->
+        <!-- Botón hamburguesa (solo móviles) -->
         <button id="hamburgerBtn" class="btn-hamburger" onclick="toggleMobileMenu()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
@@ -24,24 +26,35 @@
         <!-- Menú de navegación -->
         <div id="navMenu" class="nav-menu">
             <ul>
-                <li><button id="btnInicio" onclick="scrollToSection('inicio')" class="nav-button">Inicio</button></li>
-                <li><button onclick="scrollToSection('objetivo')" class="nav-button">Objetivo</button></li>
-                <li><button onclick="scrollToSection('productos')" class="nav-button">Productos</button></li>
-                <li><button onclick="scrollToSection('registro')" class="nav-button">Registro</button></li>
-                <li><button onclick="scrollToSection('contactanos')" class="nav-button">Contactanos</button></li>
+                <li><button id="btnInicio" onclick="scrollToSection('inicio')" class="nav-button">@Loc.T("Header.Inicio")</button></li>
+                <li><button onclick="scrollToSection('objetivo')" class="nav-button">@Loc.T("Header.Objetivo")</button></li>
+                <li><button onclick="scrollToSection('productos')" class="nav-button">@Loc.T("Header.Productos")</button></li>
+                <li><button onclick="scrollToSection('registro')" class="nav-button">@Loc.T("Header.Registro")</button></li>
+                <li><button onclick="scrollToSection('contactanos')" class="nav-button">@Loc.T("Header.Contactanos")</button></li>
             </ul>
         </div>
 
-        <!-- Button cotizar ahora -->
-        @* <button class="btn-agendar" type="button">Idioma</button> *@
-        <button type="submit" class="submit-button">
-            <i class="fa-regular fa-language"></i> <span>Idioma</span>
-        </button>
+        <!-- Selector de idioma -->
+        <div class="language-selector-container">
+            <button class="languaje-button @(isMenuOpen ? "open" : "")" @onclick="ToggleLanguageMenu" aria-expanded="@isMenuOpen">
+                <span>@GetLanguageDisplayName(Loc.CurrentLanguage)</span>
+                <i class="fa-solid fa-angle-down icon-down"></i>
+            </button>
+
+            @if (isMenuOpen)
+            {
+                <ul class="language-menu">
+                    <li @onclick="ChangeToSpanish">Español</li>
+                    <li @onclick="ChangeToChinese">Mandarín</li>
+                </ul>
+            }
+        </div>
     </div>
 </nav>
 
 @code {
     private DRR_PRESENTATION.Models.Empresa? empresa;
+    private bool isMenuOpen = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -53,17 +66,38 @@
             {
                 await JS.InvokeVoidAsync("console.log", "Datos no encontrado.");
             }
-            // else
-            // {
-                // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
-                // {
-                //     WriteIndented = true
-                // }));
-            // }
+
+            Loc.OnLanguageChanged += StateHasChanged;
+
+            await Loc.InitAsync();
         }
         catch (Exception ex)
         {
             await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
         }
     }
+
+    public void Dispose()
+    {
+        Loc.OnLanguageChanged -= StateHasChanged;
+    }
+
+    private void ToggleLanguageMenu() => isMenuOpen = !isMenuOpen;
+
+    private Task ChangeToSpanish() => ChangeLanguageAsync("es");
+    private Task ChangeToChinese() => ChangeLanguageAsync("zh");
+
+    private async Task ChangeLanguageAsync(string lang)
+    {
+        await Loc.LoadLanguageAsync(lang);
+        isMenuOpen = false;
+        StateHasChanged();
+    }
+
+    private string GetLanguageDisplayName(string code) =>
+        code switch
+        {
+            "zh" => "Mandarín",
+            _ => "Español"
+        };
 }
