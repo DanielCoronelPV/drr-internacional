@@ -1,0 +1,332 @@
+﻿/* contactsection.css */
+
+.contact-section {
+    padding: 5rem 1rem;
+    min-height: 100vh;
+    background-color: transparent;
+}
+
+.contact-header {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.contact-header .divider {
+    width: 96px;
+    height: 4px;
+    margin: 0 auto 1.5rem;
+    background: #f9e905;
+    border-radius: 2px;
+}
+
+    .contact-header h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #111827;
+        margin-bottom: 1rem;
+    }
+
+    .contact-header p {
+        font-size: 1.25rem;
+        color: #4b5563;
+        max-width: 64rem;
+        margin: 0 auto;
+    }
+
+.contact-grid {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+    .contact-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.map-component {
+    order: 2;
+}
+
+@media (min-width: 1024px) {
+    .map-component {
+        order: 1;
+    }
+}
+
+.contact-form {
+    font-family: 'Montserrat', sans-serif;
+    order: 1;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+    padding: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .contact-form {
+        order: 2;
+    }
+}
+
+.contact-form h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.contact-form p {
+    color: #4b5563;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.icon-input {
+    margin-right: 0.75rem;
+    color: #9ca3af;
+    font-size: 1.25rem;
+}
+
+.input {
+    flex: 1;
+    background: #f9fafb;
+    padding: 1rem;
+    padding-left: 5px;
+    border-radius: 0.75rem;
+    border: none;
+    color: #111827;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out
+}
+
+    .input:focus {
+        outline: none;
+        background: #fff;
+        box-shadow: 0 3px 0 0 rgba(59, 130, 246, 0.2);
+    }
+
+.textarea {
+    resize: none;
+}
+
+.submit-button {
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    border: 2px solid #4CAF50;
+    color: #4CAF50 !important;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+    .submit-button:hover {
+        background: #e4ffe0;
+        transform: translateY(-2px);
+    }
+
+    .submit-button span {
+        margin-left: 0.5rem;
+        color: #4CAF50 !important;
+    }
+
+.map-placeholder {
+    border-radius: 12px;
+    height: 20rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+}
+
+.map-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+    .map-content i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #2563eb;
+    }
+
+    .map-content h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .map-content p {
+        color: #4b5563;
+    }
+
+.dot {
+    position: absolute;
+    border-radius: 50%;
+}
+
+    .dot.red {
+        top: 2rem;
+        left: 2rem;
+        width: 0.75rem;
+        height: 0.75rem;
+        background: #ef4444;
+        animation: pulse 2s infinite;
+    }
+
+    .dot.blue {
+        bottom: 3rem;
+        right: 3rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #3b82f6;
+    }
+
+    .dot.green {
+        top: 4rem;
+        right: 4rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: #10b981;
+    }
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.contact-info-box {
+    font-family: 'Montserrat', sans-serif;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+    .contact-info-box h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #111827;
+        margin-bottom: 1.5rem;
+    }
+
+.info-item {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.icon-box {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .icon-box i {
+        font-size: 1rem;
+    }
+
+    .icon-box.blue {
+        background-color: #dbeafe;
+        color: #2563eb;
+    }
+
+    .icon-box.green {
+        background-color: #d1fae5;
+        color: #10b981;
+    }
+
+    .icon-box.purple {
+        background-color: #ede9fe;
+        color: #8b5cf6;
+    }
+
+    .icon-box.orange {
+        background-color: #ffedd5;
+        color: #f97316;
+    }
+
+.info-item h4 {
+    margin: 0;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.info-item p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+.dropdown-multi {
+    position: relative;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.dropdown-menu {
+    position: absolute;
+    width: 90%;
+    background: white;
+    border: 1px solid #ccc;
+    margin-top: 2px;
+    z-index: 1000;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.2);
+    padding: 5px 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    padding: 4px 0;
+}
