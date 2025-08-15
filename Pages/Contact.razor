@@ -67,39 +67,6 @@
                         <i class="fas fa-phone icon-input"></i>
                         <InputText type="tel" class="input" @bind-Value="formData.Phone" placeholder="Número de Teléfono" required />
                     </div>
-                    @* <div class="form-group">
-                        <i class="fas fa-tag icon-input"></i>
-                        <InputSelect class="input" @bind-Value="formData.Reason" required>
-                            <option value="">Selecciona un motivo</option>
-                            <option value="consulta-general">Consulta General</option>
-                            <option value="soporte-tecnico">Soporte Técnico</option>
-                            <option value="ventas">Ventas</option>
-                            <option value="colaboracion">Colaboración</option>
-                            <option value="otro">Otro</option>
-                        </InputSelect>
-                    </div>
-                    <div class="form-group dropdown-multi">
-                        <i class="fas fa-cubes icon-input"></i>
-                        <div class="dropdown">
-                            <button class="input dropdown-toggle" @onclick="ToggleDropdown">
-                                @(formData.Modules.Count == 0 ? "Selecciona módulos" : $"Seleccionados: {string.Join(", ", formData.Modules)}")
-                            </button>
-                            @if (isDropdownOpen)
-                            {
-                                <div class="dropdown-menu show">
-                                    @foreach (var modulo in ModulosDisponibles)
-                                    {
-                                        <label class="dropdown-item">
-                                            <input type="checkbox"
-                                                   checked="@formData.Modules.Contains(modulo)"
-                                                   @onchange="() => ToggleModulo(modulo)" />
-                                            @modulo
-                                        </label>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    </div> *@
                     <div class="form-group">
                         <i class="fas fa-comment icon-input"></i>
                         <InputTextArea class="input textarea" @bind-Value="formData.Message" placeholder="Tu mensaje..." Rows="5" required />
@@ -153,10 +120,6 @@
         if (firstRender)
         {
             await JS.InvokeVoidAsync("setupFab");
-        }
-
-        if (firstRender)
-        {
             await JS.InvokeVoidAsync("initLeafletMap");
         }
     }
@@ -173,11 +136,6 @@
             }
             else
             {
-                // await JS.InvokeVoidAsync("console.log", "Empresa cargada:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
-                // {
-                //     WriteIndented = true
-                // }));
-
                 // Formatear teléfono
                 var telefono = empresa?.telefono ?? "";
 
@@ -190,8 +148,6 @@
 
                 // Prefijo país Argentina: 549
                 numeroWhatsApp = $"549{telefono}";
-
-                // await JS.InvokeVoidAsync("console.log", $"WhatsApp formateado: {numeroWhatsApp}");
             }
         }
         catch (Exception ex)
@@ -200,23 +156,4 @@
         }
     }
 
-//     private bool isDropdownOpen = false;
-
-//     private List<string> ModulosDisponibles = new()
-// {
-//     "Ventas", "Compras", "Contabilidad", "Stock"
-// };
-
-//     private void ToggleDropdown()
-//     {
-//         isDropdownOpen = !isDropdownOpen;
-//     }
-
-//     private void ToggleModulo(string modulo)
-//     {
-//         if (formData.Modules.Contains(modulo))
-//             formData.Modules.Remove(modulo);
-//         else
-//             formData.Modules.Add(modulo);
-//     }
 }

@@ -1,6 +1,10 @@
 ﻿@inherits LayoutComponentBase
+@using DRR_PRESENTATION.Models
+@using DRR_PRESENTATION.Services
+@inject EmpresaService EmpresaService
+@inject IJSRuntime JS
 
-<Header />
+<Header EmpresaData="@_empresa" />
 
 <div>
     <main role="main">
@@ -8,7 +12,11 @@
     </main>
 </div>
 
-<Shared />
+<section id="footer">
+    <Footer EmpresaData="@_empresa" />
+</section>
+
+<Shared EmpresaData="@_empresa" />
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -16,12 +24,22 @@
     AOS.init();
 </script>
 
-
 @code{ 
-    
-    
-    override async Task OnInitializedAsync()
+    private Empresa? _empresa;
+
+    protected override async Task OnInitializedAsync()
     {
-            //Aca carga la empresa.
+        try
+        {
+            _empresa = await EmpresaService.ObtenerEmpresaAsync();
+            if (_empresa == null)
+            {
+                await JS.InvokeVoidAsync("console.log", "Datos de la empresa no encontrados.");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JS.InvokeVoidAsync("console.error", "Error al cargar los datos de la empresa:", ex.Message);
+        }
     }
 }

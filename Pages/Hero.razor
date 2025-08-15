@@ -53,19 +53,11 @@
         <Registro />
     </section>
 
-    @* <section id="clientes">
-        <ClientsSlider />
-    </section> *@
-
     <section id="contactanos">
         <Contact />
     </section>
 
 </div>
-
-<section id="footer">
-    <Footer />
-</section>
 
 @code {
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -73,32 +65,6 @@
         if (firstRender)
         {
             await JS.InvokeVoidAsync("startCounters");
-        }
-    }
- 
-    private DRR_PRESENTATION.Models.Empresa? empresa;
-
-    protected override async Task OnInitializedAsync()  
-    {  
-        try
-        {
-            empresa = await EmpresaService.ObtenerEmpresaAsync();
-
-            if (empresa == null)
-            {
-                await JS.InvokeVoidAsync("console.log", "Datos no encontrado.");
-            }
-            // else
-            // {
-                // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
-                // {
-                //     WriteIndented = true
-                // }));
-            // }
-        }
-        catch (Exception ex)
-        {
-            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
         }
     }
 }

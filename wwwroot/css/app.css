@@ -393,3 +393,35 @@ body, html {
         opacity: 1;
     }
 }
+
+/* Estilo del botón de Google Translate con el diseño de .languaje-button */
+#google_translate_element .goog-te-gadget-simple {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem .6rem;
+    border-radius: .6rem;
+    border: 2px solid #393185;
+    background: transparent;
+    cursor: pointer;
+    transition: background .2s;
+    font-size: 0.9rem; /* Ajusta tamaño de fuente */
+    font-weight: 500;
+}
+
+    /* Texto del botón */
+    #google_translate_element .goog-te-gadget-simple span {
+        color: #393185 !important; /* Igual que tu botón */
+        font-weight: bold;
+    }
+
+    /* Icono por defecto (lo ocultamos si no lo quieres) */
+    #google_translate_element .goog-te-gadget-simple img {
+        display: none;
+    }
+
+    /* Hover como en tu .languaje-button */
+    #google_translate_element .goog-te-gadget-simple:hover {
+        background: rgba(57,49,131,0.06);
+    }

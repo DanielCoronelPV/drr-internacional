@@ -1,5 +1,4 @@
-﻿
-export function loadGoogleTranslate() {
+﻿export function loadGoogleTranslate() {
     return new Promise((resolve, reject) => {
         if (window.google?.translate?.TranslateElement) {
             init();
@@ -22,8 +21,8 @@ export function loadGoogleTranslate() {
         function init() {
             new google.translate.TranslateElement({
                 pageLanguage: 'es',
-                includedLanguages: 'es,en,pt,it,fr,de,zh-CN,zh-TW',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                includedLanguages: 'es,zh-CN,zh-TW,en,pt,it,fr,de',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
             }, 'google_translate_element');
         }
     });

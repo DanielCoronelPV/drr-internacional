@@ -1,8 +1,4 @@
-﻿@using DRR_PRESENTATION.Services
-@using System.Text.Json
-
-@inject EmpresaService EmpresaService
-@inject IJSRuntime JS
+﻿@using DRR_PRESENTATION.Models
 
 <nav id="mainNav" data-aos="fade-down" data-aos-duration="1000" class="navbar">
     <div class="navbar-container">
@@ -15,9 +11,9 @@
 
         <!-- Logo -->
         <div class="logo-container" onclick="scrollToSection('inicio')">
-            @if (empresa != null && !string.IsNullOrEmpty(empresa.Logo))
+            @if (EmpresaData != null && !string.IsNullOrEmpty(EmpresaData.Logo))
             {
-                <img id="logo" src="data:image/png;base64,@empresa.Logo" alt="Logo" />
+                <img id="logo" src="data:image/png;base64,@EmpresaData.Logo" alt="Logo" />
             }
         </div>
 
@@ -32,42 +28,12 @@
             </ul>
         </div>
 
-        <!-- Button cotizar ahora -->
-        @* <button class="btn-agendar" type="button">Idioma</button> *@
-        @*<button type="submit" class="submit-button">
-                <i class="fa-regular fa-language"></i> <span>Idioma</span>
-            </button>*@
-
-        
         <Traductor/>
 
     </div>
 </nav>
 
 @code {
-    private DRR_PRESENTATION.Models.Empresa? empresa;
-
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            empresa = await EmpresaService.ObtenerEmpresaAsync();
-
-            if (empresa == null)
-            {
-                await JS.InvokeVoidAsync("console.log", "Datos no encontrado.");
-            }
-            // else
-            // {
-            // await JS.InvokeVoidAsync("console.log", "Mostrando datos de BD - Sector de Empresa:", JsonSerializer.Serialize(empresa, new JsonSerializerOptions
-            // {
-            //     WriteIndented = true
-            // }));
-            // }
-        }
-        catch (Exception ex)
-        {
-            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
-        }
-    }
+    [Parameter]
+    public Empresa? EmpresaData { get; set; }
 }

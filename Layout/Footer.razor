@@ -1,9 +1,7 @@
-﻿@using Microsoft.AspNetCore.Components.Web  
-@using DRR_PRESENTATION.Services
-@using System.Text.Json  
+﻿@using DRR_PRESENTATION.Models
+@using Microsoft.AspNetCore.Components.Web
 
-@inject EmpresaService EmpresaService  
-@inject IJSRuntime JS  
+@inject IJSRuntime JS
 
 <footer class="footer">  
   <div class="footer-bg-cover"></div>  
@@ -14,12 +12,12 @@
       <!-- Marca -->  
       <div>  
         <h3 class="footer-brand">  
-          <span class="logo-cont" onclick="scrollToSection('inicio')">  
-            @if (empresa != null && !string.IsNullOrEmpty(empresa.Logo))  
-            {  
-              <img id="logo" src="data:image/png;base64,@empresa.Logo" alt="Logo" />  
-            }  
-          </span>  
+          <span class="logo-cont" onclick="scrollToSection('inicio')">
+                        @if (EmpresaData != null && !string.IsNullOrEmpty(EmpresaData.Logo))
+                        {
+                            <img id="logo" src="data:image/png;base64,@EmpresaData.Logo" alt="Logo" />
+                        }
+                    </span>  
         </h3>
                 <p class="footer-brand-text">30 años de experiencia, ahora conectando Argentina, Paraguay, Brasil, Uruguay y China.</p>
                 <div class="social-links">
@@ -52,9 +50,9 @@
                     <div><i class="fas fa-phone"></i>Llamanos: +@numeroWhatsApp</div>  
           <div>  
             <i class="fas fa-envelope"></i>  
-            @if (empresa != null && !string.IsNullOrEmpty(empresa.E_Mail))  
+            @if (EmpresaData != null && !string.IsNullOrEmpty(EmpresaData.E_Mail))  
             {  
-              <p>@empresa.E_Mail</p>  
+              <p>@EmpresaData.E_Mail</p>  
             }  
           </div>  
         </div>  
@@ -79,9 +77,9 @@
   <div class="decor-dot dot-2"></div>  
 </footer>  
 
-@code {  
-
-    private DRR_PRESENTATION.Models.Empresa? empresa;
+@code {
+    [Parameter]
+    public Empresa? EmpresaData { get; set; }
     private string numeroWhatsApp = "";  
 
     protected override async Task OnAfterRenderAsync(bool firstRender)  
@@ -92,30 +90,18 @@
         }  
     }  
 
-    protected override async Task OnInitializedAsync()  
-    {  
-        try  
-        {  
-            empresa = await EmpresaService.ObtenerEmpresaAsync();  
-
-            if (empresa == null)  
-            {  
-                await JS.InvokeVoidAsync("console.log", "Datos no encontrados.");  
-            }  
-            else  
-            {  
-                var telefono = empresa?.telefono ?? "";  
-                telefono = telefono.Replace("-", "").Replace(" ", "");  
-                if (telefono.StartsWith("0"))  
-                    telefono = telefono.Substring(1);  
-                numeroWhatsApp = $"549{telefono}";  
-            }  
-        }  
-        catch (Exception ex)  
-        {  
-            await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);  
-        }  
-    }  
+    protected override void OnParametersSet()
+    {
+        // Este método se llama cada vez que se establece un parámetro (como EmpresaData)
+        if (EmpresaData != null)
+        {
+            var telefono = EmpresaData.telefono ?? "";
+            telefono = telefono.Replace("-", "").Replace(" ", "");
+            if (telefono.StartsWith("0"))
+                telefono = telefono.Substring(1);
+            numeroWhatsApp = $"549{telefono}";
+        }
+    }
 
     [Inject] public IJSRuntime JSRuntime { get; set; } = default!;  
 
