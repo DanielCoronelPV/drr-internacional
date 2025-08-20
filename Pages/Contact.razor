@@ -1,13 +1,14 @@
 ﻿@using DRR_PRESENTATION.Services
 @using System.Text.Json
 
+@inject TranslationService Translator
 @inject EmpresaService EmpresaService
 
 <section class="contact-section">
         <div class="contact-header">
-            <h2>Contactanos</h2>
+            <h2>@((MarkupString)Translator.Translate("contactanos"))</h2>
             <div class="divider"></div>
-            <p>¿Tienes preguntas o necesitas ayuda? Estamos a un mensaje de distancia. ¡Contáctanos hoy mismo!</p>
+            <p>@((MarkupString)Translator.Translate("contactanosSubtitle"))</p>
         </div>
 
         <div class="contact-grid">
@@ -15,25 +16,25 @@
                 <div id="map" class="map-placeholder"></div>
 
                 <div class="contact-info-box">
-                    <h3>Información de Contacto</h3>
+                    <h3>@((MarkupString)Translator.Translate("informacionContacto"))</h3>
                     <div class="info-item">
                         <div class="icon-box blue"><i class="fas fa-map-pin"></i></div>
                         <div>
-                            <h4>Dirección</h4>
-                        <p>Ayohuma 490, esquina Mborore al 3202 km 10.  Frente Barrio "Eldorado 3".</p>
+                            <h4>@((MarkupString)Translator.Translate("direccion"))</h4>
+                            <p>@((MarkupString)Translator.Translate("direccionDescri"))</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="icon-box green"><i class="fas fa-phone"></i></div>
                         <div>
-                            <h4>Teléfono</h4>
+                            <h4>@((MarkupString)Translator.Translate("telefono"))</h4>
                             <p>+@numeroWhatsApp</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="icon-box purple"><i class="fas fa-envelope"></i></div>
                         <div>
-                            <h4>Email</h4>
+                            <h4>@((MarkupString)Translator.Translate("email"))</h4>
                                     @if (empresa != null && !string.IsNullOrEmpty(empresa.E_Mail))
                             { 
                             <p>@empresa.E_Mail</p>
@@ -43,36 +44,36 @@
                     <div class="info-item">
                         <div class="icon-box orange"><i class="fas fa-clock"></i></div>
                         <div>
-                            <h4>Horarios</h4>
-                            <p>Lun - Vie: 8:00 - 20:00</p>
-                            <p>Sáb: 8:00 - 12:00</p>
+                            <h4>@((MarkupString)Translator.Translate("horarios"))</h4>
+                            <p>@((MarkupString)Translator.Translate("horariosDescripcion1"))</p>
+                            <p>@((MarkupString)Translator.Translate("horariosDescripcion2"))</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="contact-form">
-                <h3>Envianos un Mensaje</h3>
-                <p>Completa el formulario y nos pondremos en contacto contigo pronto.</p>
+                <h3>@((MarkupString)Translator.Translate("envianosMensaje"))</h3>
+                <p>@((MarkupString)Translator.Translate("enviarSubtitle"))</p>
                 <EditForm Model="formData" OnValidSubmit="HandleSubmit">
                     <div class="form-group">
                         <i class="fas fa-user icon-input"></i>
-                        <InputText class="input" @bind-Value="formData.FullName" placeholder="Nombre Completo" required />
+                        <InputText class="input" @bind-Value="formData.FullName" placeholder="@((MarkupString)Translator.Translate("nombreCompleto"))" required />
                     </div>
                     <div class="form-group">
                         <i class="fas fa-envelope icon-input"></i>
-                        <InputText type="email" class="input" @bind-Value="formData.Email" placeholder="Correo Electrónico" required />
+                        <InputText type="email" class="input" @bind-Value="formData.Email" placeholder="@((MarkupString)Translator.Translate("correoElectronico"))" required />
                     </div>
                     <div class="form-group">
                         <i class="fas fa-phone icon-input"></i>
-                        <InputText type="tel" class="input" @bind-Value="formData.Phone" placeholder="Número de Teléfono" required />
+                        <InputText type="tel" class="input" @bind-Value="formData.Phone" placeholder="@((MarkupString)Translator.Translate("numeroTelefono"))" required />
                     </div>
                     <div class="form-group">
                         <i class="fas fa-comment icon-input"></i>
-                        <InputTextArea class="input textarea" @bind-Value="formData.Message" placeholder="Tu mensaje..." Rows="5" required />
+                        <InputTextArea class="input textarea" @bind-Value="formData.Message" placeholder="@((MarkupString)Translator.Translate("tuMensaje"))" Rows="5" required />
                     </div>
                     <button type="submit" class="submit-button">
-                        <i class="fas fa-paper-plane"></i> <span>Enviar Mensaje</span>
+                        <i class="fas fa-paper-plane"></i> <span>@((MarkupString)Translator.Translate("enviarMensaje"))</span>
                     </button>
                 </EditForm>
             </div>
@@ -154,6 +155,21 @@
         {
             await JS.InvokeVoidAsync("console.error", "Error al obtener datos:", ex.Message);
         }
+    }
+
+    protected override void OnInitialized()
+    {
+        Translator.OnLanguageChanged += OnLanguageChangedHandler;
+    }
+
+    private void OnLanguageChangedHandler()
+    {
+        InvokeAsync(StateHasChanged); // fuerza el re-render cuando cambia el idioma
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler; // limpia suscripción
     }
 
 }

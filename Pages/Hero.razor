@@ -2,6 +2,7 @@
 @using DRR_PRESENTATION.Models
 @using System.Text.Json
 
+@inject TranslationService Translator
 @inject EmpresaService EmpresaService
 
 @page "/"
@@ -19,16 +20,16 @@
             <div class="hero-content">
                 <!-- Logo -->
                 <h1 class="logo-position">
-                    DRR <span class="logo-span"> Systemas</span>
+                    @((MarkupString)Translator.Translate("logo")) <span class='logo-span'>@((MarkupString)Translator.Translate("logo2"))</span>
                 </h1>
 
                 <!-- Title -->
                 <h2 class="title" data-aos="fade-up" data-aos-duration="1000" tabindex="-1">
-                    Con más de <strong>30 años</strong> de trayectoria en el desarrollo de software desde Argentina, nuestra empresa ha sido referente en soluciones tecnológicas para <strong>comercios e industrias.</strong>
+                    @((MarkupString)Translator.Translate("heroTitle"))
                 </h2>
 
                 <h4 class="subtitle" data-aos="fade-up" data-aos-duration="1300">
-                    Hoy, buscamos abrir un nuevo nicho de negocio, generando una interacción comercial entre productores de Argentina, Paraguay, Brasil y Uruguay para el intercambio de productos primarios y agroindustriales, para ello estamos desarrollando un portal B2B (empresa a empresa), adaptado ahora al comercio internacional.
+                    @((MarkupString)Translator.Translate("heroSubtitle"))
                 </h4>
             </div>
 
@@ -60,11 +61,18 @@
 </div>
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnInitialized()
     {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("startCounters");
-        }
+        Translator.OnLanguageChanged += OnLanguageChangedHandler;
+    }
+
+    private void OnLanguageChangedHandler()
+    {
+        InvokeAsync(StateHasChanged); // fuerza el re-render cuando cambia el idioma
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler; // limpia suscripción
     }
 }

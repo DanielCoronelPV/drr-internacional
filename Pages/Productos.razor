@@ -1,13 +1,14 @@
-﻿@inject IJSRuntime JS
+﻿@inject TranslationService Translator
+@inject IJSRuntime JS
 
 <section id="eleginos" class="why-choose-us">
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h2>Productos</h2>
+            <h2>@((MarkupString)Translator.Translate("productos"))</h2>
             <div class="divider"></div>
             <p>
-                Descubre una amplia gama de productos naturales y artesanales, desde maderas selectas hasta los mejores aceites y conservas.
+                @((MarkupString)Translator.Translate("productosSubtitle"))
             </p>
         </div>
 
@@ -19,11 +20,11 @@
                         <div class="product-image-container">
                             <img src="@product.Image" alt="@product.Name" class="product-image" />
                             <div class="image-overlay"></div>
-                            <div class="category-badge">@product.Category</div>
+                            <div class="category-badge">@((MarkupString)Translator.Translate(product.Category))</div>
                         </div>
                         <div class="product-content">
-                            <h3 class="product-title">@product.Name</h3>
-                            <p class="product-description">@product.Description</p>
+                            <h3 class="product-title">@((MarkupString)Translator.Translate(product.Name))</h3>
+                            <p class="product-description">@((MarkupString)Translator.Translate(product.Description))</p>
                         </div>
                     </div>
                 }
@@ -32,7 +33,7 @@
             <div class="banner-position">
                 <div class="natural-products-banner">
                     <div class="dot animate"></div>
-                    <span class="natural-text">Productos 100% Naturales</span>
+                    <span class="natural-text">@((MarkupString)Translator.Translate("productosNaturales"))</span>
                 </div>
             </div>
 
@@ -53,14 +54,29 @@
 
     public List<Product> Products = new()
     {
-        new() { Id = 1, Name = "Madera", Description = "Madera en sus distintas presentaciones", Image = "/assets/img/products/madera.jpg", Category = "Materiales" },
-        new() { Id = 2, Name = "Té y Yerba Mate", Description = "Té premium y yerba mate tradicional", Image = "/assets/img/products/teyerba.jpg", Category = "Bebidas" },
-        new() { Id = 3, Name = "Cítricos", Description = "Frutas cítricas frescas de temporada", Image = "/assets/img/products/citricos.jpg", Category = "Frutas" },
-        new() { Id = 4, Name = "Carnes", Description = "Carnes premium de alta calidad", Image = "/assets/img/products/carnes.jpg", Category = "Proteínas" },
-        new() { Id = 5, Name = "Vinos", Description = "Vinos selectos y de reserva", Image = "/assets/img/products/vinos.jpg", Category = "Bebidas" },
-        new() { Id = 6, Name = "Aceitunas", Description = "Aceitunas gourmet variadas", Image = "/assets/img/products/aceitunas.jpg", Category = "Conservas" },
-        new() { Id = 7, Name = "Aceites de Oliva", Description = "Aceites de oliva extra virgen", Image = "/assets/img/products/aceite-oliva.jpg", Category = "Aceites" },
-        new() { Id = 8, Name = "Nueces y Coco", Description = "Nueces y aceites de coco naturales", Image = "/assets/img/products/nueces-coco.jpg", Category = "Frutos Secos" },
-        new() { Id = 9, Name = "Otros Productos", Description = "Otros productos agroindustriales", Image = "/assets/img/products/otros-productos.jpg", Category = "Diversos" }
+        new() { Id = 1, Name = "madera", Description = "maderaDescripcion", Image = "assets/img/products/madera.jpg", Category = "materiales" },
+        new() { Id = 2, Name = "teymate", Description = "teymateDescripcion", Image = "assets/img/products/teyerba.jpg", Category = "bebidas" },
+        new() { Id = 3, Name = "citricos", Description = "citricosDescripcion", Image = "assets/img/products/citricos.jpg", Category = "frutas" },
+        new() { Id = 4, Name = "carnes", Description = "carnesDescripcion", Image = "assets/img/products/carnes.jpg", Category = "proteínas" },
+        new() { Id = 5, Name = "vinos", Description = "vinosDescripcion", Image = "assets/img/products/vinos.jpg", Category = "bebidas" },
+        new() { Id = 6, Name = "aceitunas", Description = "aceitunasDescripcion", Image = "assets/img/products/aceitunas.jpg", Category = "conservas" },
+        new() { Id = 7, Name = "aceiteOliva", Description = "aceiteOlivaDescripcion", Image = "assets/img/products/aceite-oliva.jpg", Category = "aceites" },
+        new() { Id = 8, Name = "nuecesCoco", Description = "nuecesCocoDescripcion", Image = "assets/img/products/nueces-coco.jpg", Category = "frutosSecos" },
+        new() { Id = 9, Name = "otros", Description = "otrosDescripcion", Image = "assets/img/products/otros-productos.jpg", Category = "diversos" }
     };
+
+    protected override void OnInitialized()
+    {
+        Translator.OnLanguageChanged += OnLanguageChangedHandler;
+    }
+
+    private void OnLanguageChangedHandler()
+    {
+        InvokeAsync(StateHasChanged); // fuerza el re-render cuando cambia el idioma
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler; // limpia suscripción
+    }
 }

@@ -1,14 +1,24 @@
-﻿@inherits LayoutComponentBase
-@using DRR_PRESENTATION.Models
+﻿@using DRR_PRESENTATION.Models
 @using DRR_PRESENTATION.Services
+
+@inherits LayoutComponentBase
 @inject EmpresaService EmpresaService
+@inject TranslationService Translator
+@inject HttpClient Http
 @inject IJSRuntime JS
 
 <Header EmpresaData="@_empresa" />
 
 <div>
     <main role="main">
-        @Body
+        @if (!isLoaded)
+        {
+            <p>Cargando traducciones...</p>
+        }
+        else
+        {
+            @Body
+        }
     </main>
 </div>
 
@@ -18,14 +28,9 @@
 
 <Shared EmpresaData="@_empresa" />
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-    AOS.init();
-</script>
-
 @code{ 
     private Empresa? _empresa;
+    private bool isLoaded = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,5 +46,33 @@
         {
             await JS.InvokeVoidAsync("console.error", "Error al cargar los datos de la empresa:", ex.Message);
         }
+
+        // if (_empresa == null)
+        // {
+        //     await JS.InvokeVoidAsync("console.log", "⚠️ Datos de la empresa no encontrados.");
+        // }
+        // else
+        // {
+        //     await JS.InvokeVoidAsync("console.log", "✅ Empresa cargada:", _empresa);
+        // }
+
+        await Translator.LoadTranslations(Http);
+        isLoaded = true;
+        StateHasChanged(); // forzar render después de cargar JSON
+    }
+
+    protected override void OnInitialized()
+    {
+        Translator.OnLanguageChanged += OnLanguageChangedHandler;
+    }
+
+    private void OnLanguageChangedHandler()
+    {
+        InvokeAsync(StateHasChanged); // fuerza el re-render cuando cambia el idioma
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler; // limpia suscripción
     }
 }

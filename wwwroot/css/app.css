@@ -158,7 +158,7 @@ body, html {
 .bg-hero {
     justify-content: center;
     display: flex;
-    background-image: url('/assets/img/home-fondo.jpg');
+    background-image: url('../assets/img/home-fondo.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -394,8 +394,8 @@ body, html {
     }
 }
 
-/* Estilo del botón de Google Translate con el diseño de .languaje-button */
-#google_translate_element .goog-te-gadget-simple {
+/* Estilo del select para idiomas */
+.language-select {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -406,22 +406,19 @@ body, html {
     background: transparent;
     cursor: pointer;
     transition: background .2s;
-    font-size: 0.9rem; /* Ajusta tamaño de fuente */
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #393185;
+    font-family: inherit; /* Mantiene la fuente del sitio */
 }
 
-    /* Texto del botón */
-    #google_translate_element .goog-te-gadget-simple span {
-        color: #393185 !important; /* Igual que tu botón */
+    /* Hover */
+    .language-select:hover {
+        background: rgba(57, 49, 131, 0.06);
+    }
+
+    /* Opciones internas */
+    .language-select option {
+        color: #393185;
         font-weight: bold;
-    }
-
-    /* Icono por defecto (lo ocultamos si no lo quieres) */
-    #google_translate_element .goog-te-gadget-simple img {
-        display: none;
-    }
-
-    /* Hover como en tu .languaje-button */
-    #google_translate_element .goog-te-gadget-simple:hover {
-        background: rgba(57,49,131,0.06);
     }

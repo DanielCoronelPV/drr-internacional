@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DRR Systemas - Internacional</title>
-    <!--<base href="/drr-page/" />-->
-    <base href="/" />
+    <base href="/drr-internacional/" />
+    <!--<base href="/" />-->
     <link rel="icon" href="./favicon.ico" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/hero.css" asp-append-version="true" />
@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="css/objetivo.css" asp-append-version="true" />
     <link rel="stylesheet" href="css/productos.css" asp-append-version="true" />
     <link rel="stylesheet" href="css/registro.css" asp-append-version="true" />
-    <!--<link rel="stylesheet" href="css/clientsslider.css" asp-append-version="true" />-->
     <link rel="stylesheet" href="css/contact.css" asp-append-version="true" />
     <link rel="stylesheet" href="css/footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
@@ -38,7 +37,6 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="js/counter.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             window.startCounters(); // Llama a la función definida en counter.js
@@ -164,49 +162,6 @@
             }
         });
     </script>
-
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const counters = document.querySelectorAll(".counter");
-            const options = {
-                threshold: 0.5
-            };
-
-            const startCounting = (entry) => {
-                const el = entry.target;
-                const target = +el.getAttribute("data-target");
-                let current = 0;
-                const increment = target / 100;
-                const speed = 20; // milisegundos entre cada incremento
-
-                const updateCounter = () => {
-                    if (current < target) {
-                        current += increment;
-                        el.innerText = Math.ceil(current);
-                        setTimeout(updateCounter, speed);
-                    } else {
-                        el.innerText = target;
-                    }
-                };
-
-                updateCounter();
-                observer.unobserve(el); // solo una vez
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        startCounting(entry);
-                    }
-                });
-            }, options);
-
-            counters.forEach(counter => observer.observe(counter));
-        });
-    </script>
-
-    <script src="js/clientsSlider.js"></script>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="js/map.js"></script>

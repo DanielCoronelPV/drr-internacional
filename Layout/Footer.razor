@@ -1,6 +1,7 @@
 ﻿@using DRR_PRESENTATION.Models
 @using Microsoft.AspNetCore.Components.Web
 
+@inject TranslationService Translator
 @inject IJSRuntime JS
 
 <footer class="footer">  
@@ -19,7 +20,7 @@
                         }
                     </span>  
         </h3>
-                <p class="footer-brand-text">30 años de experiencia, ahora conectando Argentina, Paraguay, Brasil, Uruguay y China.</p>
+                <p class="footer-brand-text">@((MarkupString)Translator.Translate("footerDescri"))</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/DRR.Systemas/" class="social-btn"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://www.instagram.com/drrsystemas/?hl=es" class="social-btn"><i class="fab fa-instagram"></i></a>
@@ -28,27 +29,27 @@
       </div>  
 
       <!-- Enlaces rápidos -->  
-      <div>  
-        <h4 class="footer-section-title">Enlaces Rápidos</h4>  
-        <ul class="footer-links">  
+      <div>
+                <h4 class="footer-section-title">@((MarkupString)Translator.Translate("enlaceRapido"))</h4>
+                <ul class="footer-links">  
           @foreach (var item in MenuItems)  
           {  
             <li>  
-              <a href="javascript:void(0);" @onclick="() => ScrollToSection(GetSectionId(item))">  
-                @item  
-              </a>  
+              <a href="javascript:void(0);" @onclick="() => ScrollToSection(GetSectionId(item))">
+                                @((MarkupString)Translator.Translate(item))
+                            </a>  
             </li>  
           }  
         </ul>  
       </div>  
 
       <!-- Contacto -->  
-      <div>  
-        <h4 class="footer-section-title">Contacto</h4>  
-        <div class="footer-contact">
-                    <div><i class="fas fa-map-pin"></i>Ayohuma 490, esquina Mborore al 3202 km 10.  Frente Barrio "Eldorado 3".</div>
-                    <div><i class="fas fa-phone"></i>Llamanos: +@numeroWhatsApp</div>  
-          <div>  
+      <div>
+                <h4 class="footer-section-title">@((MarkupString)Translator.Translate("contacto"))</h4>
+                <div class="footer-contact">
+                    <div><i class="fas fa-map-pin"></i>@((MarkupString)Translator.Translate("direccionDescri"))</div>
+                    <div><i class="fas fa-phone"></i>@((MarkupString)Translator.Translate("llamanos")): +@numeroWhatsApp</div>
+                    <div>  
             <i class="fas fa-envelope"></i>  
             @if (EmpresaData != null && !string.IsNullOrEmpty(EmpresaData.E_Mail))  
             {  
@@ -62,12 +63,12 @@
     <div class="footer-divider"></div>  
 
     <div class="footer-bottom">  
-      <div class="footer-left">  
-        <span>© 2025 DRR Systemas. Todo los derechos reservados.</span>  
-      </div>  
-      <div class="footer-right">  
+      <div class="footer-left">
+                <span>@((MarkupString)Translator.Translate("derechosReservados"))</span>
+            </div>  
+      @* <div class="footer-right">  
         <a href="#">Políticas de Privacidad</a>  
-      </div>  
+      </div>   *@
     </div>  
   </div>  
 
@@ -105,7 +106,7 @@
 
     [Inject] public IJSRuntime JSRuntime { get; set; } = default!;  
 
-    private string[] MenuItems = { "Inicio", "Objetivo", "Productos", "Registro", "Contactanos" };  
+    private string[] MenuItems = { "inicio", "objetivo", "productos", "registro", "contactanos" };  
 
     private string GetSectionId(string label)  
     {  

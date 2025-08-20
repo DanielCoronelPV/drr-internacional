@@ -1,0 +1,14 @@
+﻿@inject TranslationService Translator
+
+<select class="language-select" @onchange="ChangeLanguage">
+    <option value="es" selected="@("es" == Translator.CurrentLanguage)">Español</option>
+    <option value="zh-CN" selected="@("zh-CN" == Translator.CurrentLanguage)">中文 (Mandarín Simplificado)</option>
+</select>
+
+@code {
+    private void ChangeLanguage(ChangeEventArgs e)
+    {
+        Translator.SetLanguage(e.Value?.ToString() ?? "es");
+        StateHasChanged();
+    }
+}

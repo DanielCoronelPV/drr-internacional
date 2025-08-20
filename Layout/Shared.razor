@@ -1,5 +1,6 @@
 ﻿@using DRR_PRESENTATION.Models
 
+@inject TranslationService Translator
 @inject IJSRuntime JS
 
 <div id="fabContainer" class="fab-container">  
@@ -9,47 +10,47 @@
     </button>  
 
     <!-- Burbuja principal -->  
-    <div id="mainBubble" class="fab-bubble main-bubble">Contactanos</div>  
+    <div id="mainBubble" class="fab-bubble main-bubble">@((MarkupString)Translator.Translate("contactanos"))</div>
 
     <!-- Opciones secundarias -->  
     <div class="fab-options">  
         <a href="https://www.youtube.com/channel/UCUCsBcpFKja9bBMaLW7J3cg" class="fab fab-youtube" target="_blank" rel="noopener noreferrer">  
             <i class="fab fa-youtube"></i>  
-            <div class="fab-bubble hover-bubble">Youtube</div>  
+            <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("youtube"))</div>
         </a>  
         <a href="https://www.instagram.com/drrsystemas/?hl=es" class="fab fab-instagram" target="_blank" rel="noopener noreferrer">  
             <i class="fab fa-instagram"></i>  
-            <div class="fab-bubble hover-bubble">Instagram</div>  
+            <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("instagram"))</div>
         </a>  
         <a href="https://www.facebook.com/DRR.Systemas/" class="fab fab-facebook" target="_blank" rel="noopener noreferrer">  
             <i class="fab fa-facebook"></i>  
-            <div class="fab-bubble hover-bubble">Facebook</div>  
+            <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("facebook"))</div>
         </a>
 
         @if (EmpresaData != null && !string.IsNullOrEmpty(EmpresaData.E_Mail))
         {
             <a href="mailto:@EmpresaData.E_Mail" class="fab fab-email" target="_blank" rel="noopener noreferrer">
                 <i class="fas fa-envelope"></i>
-                <div class="fab-bubble hover-bubble">E-mail</div>
+                <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("email"))</div>
             </a>
         }
 
         <!-- WhatsApp con subopciones -->
         <a href="@($"https://wa.me/{numeroWhatsApp}")" target="_blank" rel="noopener noreferrer" class="fab fab-wsp1">
             <i class="fab fa-whatsapp"></i>
-            <div class="fab-bubble hover-bubble">Whatsapp</div>
+            <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("whatsapp"))</div>
         </a>
 
         <!-- Llamar con subopciones -->
         <a href="@($"tel:+{numeroWhatsApp}")" class="fab fab-call1">
             <i class="fas fa-phone"></i>
-            <div class="fab-bubble hover-bubble">Eldorado</div>
+            <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("eldorado"))</div>
         </a>
 
         <!-- Ubicación con subopciones -->
         <a href="https://maps.app.goo.gl/YdGohc6JushErwdp8" class="fab fab-loc1" target="_blank">
             <i class="fas fa-location-dot"></i>
-            <div class="fab-bubble hover-bubble">Eldorado</div>
+            <div class="fab-bubble hover-bubble">@((MarkupString)Translator.Translate("eldorado"))</div>
         </a>
     </div>  
 </div>  

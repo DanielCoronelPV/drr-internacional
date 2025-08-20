@@ -1,5 +1,7 @@
 ﻿@using DRR_PRESENTATION.Models
 
+@inject TranslationService Translator
+
 <nav id="mainNav" data-aos="fade-down" data-aos-duration="1000" class="navbar">
     <div class="navbar-container">
         <!-- Botón hamburguesa (visible solo en móviles) -->
@@ -20,15 +22,15 @@
         <!-- Menú de navegación -->
         <div id="navMenu" class="nav-menu">
             <ul>
-                <li><button id="btnInicio" onclick="scrollToSection('inicio')" class="nav-button">Inicio</button></li>
-                <li><button onclick="scrollToSection('objetivo')" class="nav-button">Objetivo</button></li>
-                <li><button onclick="scrollToSection('productos')" class="nav-button">Productos</button></li>
-                <li><button onclick="scrollToSection('registro')" class="nav-button">Registro</button></li>
-                <li><button onclick="scrollToSection('contactanos')" class="nav-button">Contactanos</button></li>
+                <li><button id="btnInicio" onclick="scrollToSection('inicio')" class="nav-button">@((MarkupString)Translator.Translate("inicio"))</button></li>
+                <li><button onclick="scrollToSection('objetivo')" class="nav-button">@((MarkupString)Translator.Translate("objetivo"))</button></li>
+                <li><button onclick="scrollToSection('productos')" class="nav-button">@((MarkupString)Translator.Translate("productos"))</button></li>
+                <li><button onclick="scrollToSection('registro')" class="nav-button">@((MarkupString)Translator.Translate("registro"))</button></li>
+                <li><button onclick="scrollToSection('contactanos')" class="nav-button">@((MarkupString)Translator.Translate("contactanos"))</button></li>
             </ul>
         </div>
 
-        <Traductor/>
+        <LanguageSelector />
 
     </div>
 </nav>

@@ -1,10 +1,12 @@
-﻿<section class="services-section">
+﻿@inject TranslationService Translator
+
+<section class="services-section">
     <div class="services-container">
         <div class="services-header">
-            <h2>Registro de Socios del Portal</h2>
+            <h2>@((MarkupString)Translator.Translate("registroTitle"))</h2>
             <div class="divider"></div>
             <p>
-                Únete a nuestra red de socios comerciales y expande tu negocio a nuevos mercados internacionales.
+                @((MarkupString)Translator.Translate("registroSubtitle"))
             </p>
         </div>
 
@@ -16,12 +18,12 @@
                         <div class="icon-wrapper small">
                             <i class="@service.IconClass"></i>
                         </div>
-                        <h4>@service.Title</h4>
+                        <h4>@((MarkupString)Translator.Translate(service.Title))</h4>
                     </div>
                     <ul class="service-description-list">
                         @foreach (var item in service.DescriptionItems)
                         {
-                            <li>@item</li>
+                            <li>@((MarkupString)Translator.Translate(item))</li>
                         }
                     </ul>
                 </div>
@@ -31,12 +33,12 @@
         <!-- CTA -->
         <div class="cta">
             <div class="cta-box">
-                <h3>¿Listo para ser parte de nuestra red?</h3>
+                <h3>@((MarkupString)Translator.Translate("ctaTitle"))</h3>
                 <p>
-                    Facilita la gestión de exportación e impulsa la importación mediante nuestra plataforma especializada en comercio internacional
+                    @((MarkupString)Translator.Translate("ctaSubtitle"))
                 </p>
                 <div class="cta-buttons">
-                    <button onclick="scrollToSection('contactanos')" class="btn-outline">Iniciar Registro</button>
+                    <button onclick="scrollToSection('contactanos')" class="btn-outline">@((MarkupString)Translator.Translate("ctaButton"))</button>
                 </div>
             </div>
         </div>
@@ -57,34 +59,49 @@
         new Service
         {
             IconClass = "fa-regular fa-building",
-            Title = "Información Empresarial",
+            Title = "informacionEmpresarial",
             DescriptionItems = new()
             {
-                "Denominación / Razón Social",
-                "Domicilio (Con Geolocalización)"
+                "infoDescripcion1",
+                "infoDescripcion2"
             }
         },
         new Service
         {
             IconClass = "fas fa-phone",
-            Title = "Contacto",
+            Title = "contacto",
             DescriptionItems = new()
             {
-                "WeChat",
-                "Whatsapp"
+                "contactoDescripcion1",
+                "contactoDescripcion2"
             }
         },
         new Service
         {
             IconClass = "fa-solid fa-kaaba",
-            Title = "Productos y Servicios",
+            Title = "productosServicios",
             DescriptionItems = new()
             {
-                "Características de los productos que ofrece",
-                "Listado de Precios",
-                "Capacitación para la venta",
-                "Respaldo y repuestos del producto"
+                "productosServiciosDescripcion1",
+                "productosServiciosDescripcion2",
+                "productosServiciosDescripcion3",
+                "productosServiciosDescripcion4"
             }
         },
     };
+
+    protected override void OnInitialized()
+    {
+        Translator.OnLanguageChanged += OnLanguageChangedHandler;
+    }
+
+    private void OnLanguageChangedHandler()
+    {
+        InvokeAsync(StateHasChanged); // fuerza el re-render cuando cambia el idioma
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler; // limpia suscripción
+    }
 }
