@@ -8,43 +8,33 @@ public class EmpresaService
 {
     private readonly HttpClient _httpClient;
 
+    // 🔑 Token entregado por tu backend
+    private const string TOKEN = "FCAD75CE-4971-4A4C-B1F4-9BEF5411FD37";
+
     public EmpresaService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
+    // 📌 Obtener Empresa usando el token fijo
     public async Task<Empresa?> ObtenerEmpresaAsync()
     {
-        //EMPRESA
-        var request = new HttpRequestMessage(HttpMethod.Get, "https://drrsystemas4.azurewebsites.net/Empresa?include=1&empresaID=2");
-        //EMPRESA/SUCIRSAL
-        //var request = new HttpRequestMessage(HttpMethod.Get, "https://drrsystemas4.azurewebsites.net/Empresa/Sucursal?sucursalID=&include=0");
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "155E6F14-742F-47ED-9580-A8B604455B91");
+        var request = new HttpRequestMessage(HttpMethod.Get,
+            "https://drrsystemas4.azurewebsites.net/Empresa?include=1&empresaID=2");
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", TOKEN);
 
         var response = await _httpClient.SendAsync(request);
         string responseContent = await response.Content.ReadAsStringAsync();
 
-        //Console.WriteLine("Respuesta JSON:");
-
-        //Console.WriteLine(responseContent);
-        //using var jdoc = JsonDocument.Parse(responseContent);
-        //string jsonBonito = JsonSerializer.Serialize(jdoc.RootElement, new JsonSerializerOptions
-        //{
-        //    WriteIndented = true
-        //});
-
-        //Console.WriteLine(jsonBonito);
-
         if (!response.IsSuccessStatusCode)
-        {
-            throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}");
-        }
+            throw new Exception($"Error en la solicitud HTTP: {response.StatusCode}\n{responseContent}");
 
         var empresaResponse = JsonSerializer.Deserialize<EmpresaResponse>(responseContent, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         });
 
-        return empresaResponse?.Data.FirstOrDefault(); // ← Devolvemos la primera empresa
+        return empresaResponse?.Data.FirstOrDefault();
     }
 }
