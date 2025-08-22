@@ -28,7 +28,7 @@
 
 <Shared EmpresaData="@_empresa" />
 
-@code{ 
+@code {
     private Empresa? _empresa;
     private bool isLoaded = false;
 
@@ -47,18 +47,11 @@
             await JS.InvokeVoidAsync("console.error", "Error al cargar los datos de la empresa:", ex.Message);
         }
 
-        // if (_empresa == null)
-        // {
-        //     await JS.InvokeVoidAsync("console.log", "⚠️ Datos de la empresa no encontrados.");
-        // }
-        // else
-        // {
-        //     await JS.InvokeVoidAsync("console.log", "✅ Empresa cargada:", _empresa);
-        // }
+        // Cargar idioma por defecto (español) antes de renderizar
+        await Translator.SetLanguageAsync(Http, "es");
 
-        await Translator.LoadTranslations(Http);
         isLoaded = true;
-        StateHasChanged(); // forzar render después de cargar JSON
+        StateHasChanged();
     }
 
     protected override void OnInitialized()
@@ -68,11 +61,11 @@
 
     private void OnLanguageChangedHandler()
     {
-        InvokeAsync(StateHasChanged); // fuerza el re-render cuando cambia el idioma
+        InvokeAsync(StateHasChanged); // fuerza el re-render al cambiar idioma
     }
 
     public void Dispose()
     {
-        Translator.OnLanguageChanged -= OnLanguageChangedHandler; // limpia suscripción
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler;
     }
 }

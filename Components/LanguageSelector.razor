@@ -1,14 +1,16 @@
 ﻿@inject TranslationService Translator
+@inject HttpClient Http
 
 <select class="language-select" @onchange="ChangeLanguage">
     <option value="es" selected="@("es" == Translator.CurrentLanguage)">Español</option>
-    <option value="zh-CN" selected="@("zh-CN" == Translator.CurrentLanguage)">中文 (Mandarín Simplificado)</option>
+    <option value="pt-BR" selected="@("pt-BR" == Translator.CurrentLanguage)">Português</option>
+    <option value="zh-CN" selected="@("zh-CN" == Translator.CurrentLanguage)">中文 (Mandarín)</option>
 </select>
 
 @code {
-    private void ChangeLanguage(ChangeEventArgs e)
+    private async Task ChangeLanguage(ChangeEventArgs e)
     {
-        Translator.SetLanguage(e.Value?.ToString() ?? "es");
-        StateHasChanged();
+        var selectedLang = e.Value?.ToString() ?? "es";
+        await Translator.SetLanguageAsync(Http, selectedLang);
     }
 }
