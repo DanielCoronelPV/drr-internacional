@@ -1,5 +1,6 @@
 ﻿@inject TranslationService Translator
 @inject HttpClient Http
+@implements IDisposable
 
 <select class="language-select" @onchange="ChangeLanguage">
     <option value="es" selected="@("es" == Translator.CurrentLanguage)">Español</option>
@@ -8,9 +9,24 @@
 </select>
 
 @code {
+    protected override void OnInitialized()
+    {
+        Translator.OnLanguageChanged += OnLanguageChangedHandler;
+    }
+
     private async Task ChangeLanguage(ChangeEventArgs e)
     {
         var selectedLang = e.Value?.ToString() ?? "es";
         await Translator.SetLanguageAsync(Http, selectedLang);
+    }
+
+    private void OnLanguageChangedHandler()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= OnLanguageChangedHandler;
     }
 }
