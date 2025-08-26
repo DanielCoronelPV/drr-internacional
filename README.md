@@ -5,11 +5,12 @@ A growing web application project aims to generate commercial interaction betwee
 ---
 
 ## 📌 Description
-This is my personal portfolio, designed and developed with **Angular** to highlight my projects and professional profile.  
-The main goals of this project were to:  
-- Practice and deepen my knowledge of **Angular** and **TypeScript**  
-- Apply concepts of **component-based architecture** and **responsive design**  
-- Build a professional space to showcase my work and technical skills  
+This is a web application, designed and developed to act as a digital showcase for products.
+The main goals of this project were to:
+- Establish a professional space to showcase a catalog of products.
+- Integrate a fully functional contact form using Email.js to facilitate direct communication with clients.
+- Implement multilingual support to reach a broader audience.
+- Apply modern development principles, such as component-based architecture and responsive design, for optimal performance and user experience.
 
 ---
 
