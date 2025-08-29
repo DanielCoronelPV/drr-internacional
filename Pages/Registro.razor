@@ -13,7 +13,7 @@
         <div class="additional-services">
             @foreach (var service in AdditionalServices)
             {
-                <div class="service-card small">
+                <div class="service-card small" data-aos="@service.AosAnimation" data-aos-delay="@service.AosDelay">
                     <div class="icon-title-card">
                         <div class="icon-wrapper small">
                             <i class="@service.IconClass"></i>
@@ -37,7 +37,7 @@
                 <p>
                     @((MarkupString)Translator.Translate("ctaSubtitle"))
                 </p>
-                <div class="cta-buttons">
+                <div class="cta-buttons" data-aos="fade-up" data-aos-delay="100">
                     <button onclick="scrollToSection('contactanos')" class="btn-outline">@((MarkupString)Translator.Translate("ctaButton"))</button>
                 </div>
             </div>
@@ -52,6 +52,8 @@
         public string IconClass { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public List<string> DescriptionItems { get; set; } = new();
+        public string AosAnimation { get; set; } = string.Empty;
+        public int AosDelay { get; set; } = 0;
     }
 
     private List<Service> AdditionalServices = new()
@@ -64,7 +66,9 @@
             {
                 "infoDescripcion1",
                 "infoDescripcion2"
-            }
+            },
+            AosAnimation = "fade-left",
+            AosDelay = 100
         },
         new Service
         {
@@ -74,7 +78,9 @@
             {
                 "contactoDescripcion1",
                 "contactoDescripcion2"
-            }
+            },
+            AosAnimation = "fade-up",
+            AosDelay = 100
         },
         new Service
         {
@@ -86,7 +92,9 @@
                 "productosServiciosDescripcion2",
                 "productosServiciosDescripcion3",
                 "productosServiciosDescripcion4"
-            }
+            },
+            AosAnimation = "fade-right",
+            AosDelay = 100
         },
     };
 

@@ -7,7 +7,7 @@
 <section class="contact-section">
         <div class="contact-header">
             <h2>@((MarkupString)Translator.Translate("contactanos"))</h2>
-            <div class="divider"></div>
+            <div class="divider" data-aos="fade-up" data-aos-delay="100"></div>
             <p>@((MarkupString)Translator.Translate("contactanosSubtitle"))</p>
         </div>
 
@@ -72,7 +72,7 @@
                         <i class="fas fa-comment icon-input"></i>
                         <InputTextArea class="input textarea" @bind-Value="formData.Message" placeholder="@((MarkupString)Translator.Translate("tuMensaje"))" Rows="5" required />
                     </div>
-                    <button type="submit" class="submit-button">
+                    <button type="submit" class="submit-button" data-aos="fade-up" data-aos-delay="100">
                         <i class="fas fa-paper-plane"></i> <span>@((MarkupString)Translator.Translate("enviarMensaje"))</span>
                     </button>
                 </EditForm>
