@@ -87,4 +87,14 @@
     {
         await JSRuntime.InvokeVoidAsync("scrollToSection", sectionId);
     }
+
+    protected override void OnInitialized()
+    {
+        Translator.OnLanguageChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Translator.OnLanguageChanged -= StateHasChanged;
+    }
 }

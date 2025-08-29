@@ -7,26 +7,33 @@
 @inject HttpClient Http
 @inject IJSRuntime JS
 
-<Header EmpresaData="@_empresa" />
-
 <div>
     <main role="main">
         @if (!isLoaded)
         {
-            <p>Cargando traducciones...</p>
+            <div class="loader-container">
+                <div class="spinner"></div>
+                <p class="loader-text">Cargando contenido...</p>
+            </div>
         }
         else
         {
-            @Body
+            <Header EmpresaData="@_empresa" />
+
+            <div>
+                <main role="main">
+                    @Body
+                </main>
+            </div>
+
+            <section id="footer">
+                <Footer EmpresaData="@_empresa" />
+            </section>
+
+            <Shared EmpresaData="@_empresa" />
         }
     </main>
 </div>
-
-<section id="footer">
-    <Footer EmpresaData="@_empresa" />
-</section>
-
-<Shared EmpresaData="@_empresa" />
 
 @code {
     private Empresa? _empresa;
