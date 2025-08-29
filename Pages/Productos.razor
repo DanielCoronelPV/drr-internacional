@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="header">
             <h2>@((MarkupString)Translator.Translate("productos"))</h2>
-            <div class="divider"></div>
+            <div class="divider" data-aos="fade-up" data-aos-duration="1000"></div>
             <p>
                 @((MarkupString)Translator.Translate("productosSubtitle"))
             </p>
@@ -16,7 +16,7 @@
             <div class="products-grid">
                 @foreach (var product in Products)
                 {
-                    <div class="product-card">
+                    <div class="product-card" data-aos="@product.AosAnimation" data-aos-delay="@product.AosDelay">
                         <div class="product-image-container">
                             <img src="@product.Image" alt="@product.Name" class="product-image" />
                             <div class="image-overlay"></div>
@@ -50,19 +50,21 @@
         public string Description { get; set; } = "";
         public string Image { get; set; } = "";
         public string Category { get; set; } = "";
+        public string AosAnimation { get; set; } = string.Empty;
+        public int AosDelay { get; set; } = 0;
     }
 
     public List<Product> Products = new()
     {
-        new() { Id = 1, Name = "madera", Description = "maderaDescripcion", Image = "assets/img/products/madera.webp", Category = "materiales" },
-        new() { Id = 2, Name = "teymate", Description = "teymateDescripcion", Image = "assets/img/products/teyerba.webp", Category = "bebidas" },
-        new() { Id = 3, Name = "citricos", Description = "citricosDescripcion", Image = "assets/img/products/citricos.webp", Category = "frutas" },
-        new() { Id = 4, Name = "carnes", Description = "carnesDescripcion", Image = "assets/img/products/carnes.webp", Category = "proteínas" },
-        new() { Id = 5, Name = "vinos", Description = "vinosDescripcion", Image = "assets/img/products/vinos.webp", Category = "bebidas" },
-        new() { Id = 6, Name = "aceitunas", Description = "aceitunasDescripcion", Image = "assets/img/products/aceitunas.webp", Category = "conservas" },
-        new() { Id = 7, Name = "aceiteOliva", Description = "aceiteOlivaDescripcion", Image = "assets/img/products/aceite-oliva.webp", Category = "aceites" },
-        new() { Id = 8, Name = "nuecesCoco", Description = "nuecesCocoDescripcion", Image = "assets/img/products/nueces-coco.webp", Category = "frutosSecos" },
-        new() { Id = 9, Name = "otros", Description = "otrosDescripcion", Image = "assets/img/products/otros-productos.webp", Category = "diversos" }
+        new() { Id = 1, Name = "madera", Description = "maderaDescripcion", Image = "assets/img/products/madera.webp", Category = "materiales", AosAnimation = "fade-left", AosDelay = 100 },
+        new() { Id = 2, Name = "teymate", Description = "teymateDescripcion", Image = "assets/img/products/teyerba.webp", Category = "bebidas", AosAnimation = "fade-up", AosDelay = 100 },
+        new() { Id = 3, Name = "citricos", Description = "citricosDescripcion", Image = "assets/img/products/citricos.webp", Category = "frutas", AosAnimation = "fade-right", AosDelay = 100 },
+        new() { Id = 4, Name = "carnes", Description = "carnesDescripcion", Image = "assets/img/products/carnes.webp", Category = "proteínas", AosAnimation = "fade-left", AosDelay = 100 },
+        new() { Id = 5, Name = "vinos", Description = "vinosDescripcion", Image = "assets/img/products/vinos.webp", Category = "bebidas", AosAnimation = "fade-up", AosDelay = 100 },
+        new() { Id = 6, Name = "aceitunas", Description = "aceitunasDescripcion", Image = "assets/img/products/aceitunas.webp", Category = "conservas", AosAnimation = "fade-right", AosDelay = 100 },
+        new() { Id = 7, Name = "aceiteOliva", Description = "aceiteOlivaDescripcion", Image = "assets/img/products/aceite-oliva.webp", Category = "aceites", AosAnimation = "fade-left", AosDelay = 100 },
+        new() { Id = 8, Name = "nuecesCoco", Description = "nuecesCocoDescripcion", Image = "assets/img/products/nueces-coco.webp", Category = "frutosSecos", AosAnimation = "fade-up", AosDelay = 100 },
+        new() { Id = 9, Name = "otros", Description = "otrosDescripcion", Image = "assets/img/products/otros-productos.webp", Category = "diversos", AosAnimation = "fade-right", AosDelay = 100 }
     };
 
     protected override void OnInitialized()

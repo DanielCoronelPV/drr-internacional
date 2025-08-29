@@ -6,7 +6,7 @@
             <h2>
                 @((MarkupString)Translator.Translate("objetivo"))
             </h2>
-            <div class="divider"></div>
+            <div class="divider" data-aos="fade-up" data-aos-duration="1000"></div>
             <p>
                 @((MarkupString)Translator.Translate("objetivoSubtitle"))
             </p>
@@ -19,7 +19,7 @@
                     <div class="card-group">
                         @foreach (var card in group)
                         {
-                            <div class="card @card.BorderClass">
+                            <div class="card @card.BorderClass" data-aos="@card.AosAnimation" data-aos-delay="@card.AosDelay">
                                 <div class="card-content">
                                     <h3 class="card-title">@((MarkupString)Translator.Translate(card.Title))</h3>
                                     <p class="card-text">@((MarkupString)Translator.Translate(card.Text))</p>
@@ -40,6 +40,8 @@
         public string Title { get; set; } = string.Empty;
         public string Text { get; set; } = string.Empty;
         public string BorderClass { get; set; } = string.Empty;
+        public string AosAnimation { get; set; } = string.Empty;
+        public int AosDelay { get; set; } = 0;
     }
 
     public List<List<InfoCard>> CardGroups { get; set; } = new()
@@ -50,13 +52,17 @@
             {
                 Title = "nuestroEquipoTitle",
                 Text = "nuestroEquipoText",
-                BorderClass = "border-primary"
+                BorderClass = "border-primary",
+                AosAnimation = "fade-left",
+                AosDelay = 100
             },
             new InfoCard
             {
                 Title = "expansionGlobalTitle",
                 Text = "expansionGlobalText",
-                BorderClass = "border-accent"
+                BorderClass = "border-accent",
+                AosAnimation = "fade-left",
+                AosDelay = 100
             }
         },
         new List<InfoCard>
@@ -65,13 +71,17 @@
             {
                 Title = "ubicacionEstrategicaTitle",
                 Text = "ubicacionEstrategicaText",
-                BorderClass = "border-primary-glow"
+                BorderClass = "border-primary-glow",
+                AosAnimation = "fade-right",
+                AosDelay = 100
             },
             new InfoCard
             {
                 Title = "logisticaAdaptadaTitle",
                 Text = "logisticaAdaptadaText",
-                BorderClass = "border-accent"
+                BorderClass = "border-accent",
+                AosAnimation = "fade-right",
+                AosDelay = 100
             }
         }
     };

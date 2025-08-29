@@ -11,15 +11,15 @@
   <div class="footer-content container">  
     <div class="grid-4-cols gap-8 mb-12">  
       <!-- Marca -->  
-      <div>  
-        <h3 class="footer-brand">  
-          <span class="logo-cont" onclick="scrollToSection('inicio')">
+      <div>
+         <h3 class="footer-brand" data-aos="fade-up" data-aos-delay="100">
+                    <span class="logo-cont" onclick="scrollToSection('inicio')">
                         @if (EmpresaData != null && !string.IsNullOrEmpty(EmpresaData.Logo))
                         {
                             <img id="logo" src="data:image/png;base64,@EmpresaData.Logo" alt="Logo" />
                         }
                     </span>  
-        </h3>
+         </h3>
                 <p class="footer-brand-text">@((MarkupString)Translator.Translate("footerDescri"))</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/DRR.Systemas/" class="social-btn"><i class="fab fa-facebook-f"></i></a>
