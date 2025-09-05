@@ -1,0 +1,254 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inject IJSRuntime JS
+
+<div class="modal-overlay" style="@(_isOpen ? "display:flex;" : "display:none;")">
+    <div class="modal-card">
+        @if (!_showRegistration && !_showForgot)
+        {
+            <!-- LOGIN -->
+            <h2 class="modal-title">Login</h2>
+
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label class="lab">Email</label>
+                    <div class="input-wrapper">
+                        <InputText type="email" class="input-field" @bind-Value="loginModel.Email" placeholder="Enter your email" />
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="lab">Password</label>
+                    <div class="input-wrapper">
+                        <InputText type="@(_showPassword ? "text" : "password")" class="input-field" @bind-Value="loginModel.Password" placeholder="Enter your password" />
+                        <button type="button" class="toggle-btn" @onclick="TogglePassword">
+                            <i class="@(_showPassword ? "fa-solid fa-eye" : "fa-solid fa-eye-slash")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Password)" />
+                </div>
+
+                <div class="form-footer">
+                    <div class="remember-position">
+                        <input class="pointer" type="checkbox" id="remember" @bind="RememberMe" />
+                        <label class="pointer" for="remember">Remember me</label>
+                    </div>
+                    <div class="forgot-position">
+                        <a class="pointer" @onclick="() => _showForgot = true">Forgot password?</a>
+                    </div>
+                </div>
+
+                <div class="login-button" data-aos="fade-up" data-aos-delay="100">
+                    <button type="submit" class="btn-login">Log In</button>
+                </div>
+            </EditForm>
+
+            <p class="switch-link">
+                Don't have an account?
+                <button class="link-btn" @onclick="() => _showRegistration = true">Register</button>
+            </p>
+        }
+        else if (_showRegistration)
+        {
+            <!-- REGISTRATION -->
+            <h2 class="modal-title">Register</h2>
+
+            <EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label class="lab">Full Name</label>
+                    <InputText type="text" class="input-field" @bind-Value="registerModel.FullName" placeholder="Enter your full name" />
+                    <ValidationMessage For="@(() => registerModel.FullName)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="lab">Email</label>
+                    <InputText type="email" class="input-field" @bind-Value="registerModel.Email" placeholder="Enter your email" />
+                    <ValidationMessage For="@(() => registerModel.Email)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="lab">Password</label>
+                    <div class="input-wrapper">
+                        <InputText type="@(_showPassword ? "text" : "password")" class="input-field" @bind-Value="registerModel.Password" placeholder="Create a password" />
+                        <button type="button" class="toggle-btn" @onclick="TogglePassword">
+                            <i class="@(_showPassword ? "fa-solid fa-eye" : "fa-solid fa-eye-slash")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.Password)" />
+                </div>
+
+                <div class="form-group">
+                    <label class="lab">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <InputText type="@(_showConfirmPassword ? "text" : "password")" class="input-field" @bind-Value="registerModel.ConfirmPassword" placeholder="Confirm your password" />
+                        <button type="button" class="toggle-btn" @onclick="ToggleConfirmPassword">
+                            <i class="@(_showConfirmPassword ? "fa-solid fa-eye" : "fa-solid fa-eye-slash")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+                </div>
+
+                <div class="form-footer">
+                    <input class="pointer" type="checkbox" id="terms" @bind="AcceptTerms" />
+                    <label class="pointer" for="terms">I agree to the Terms of Service and Privacy Policy</label>
+                </div>
+
+                <div class="login-button" data-aos="fade-up" data-aos-delay="100">
+                    <button type="submit" disabled="@( !AcceptTerms )" class="btn-login">Create Account</button>
+                </div>
+            </EditForm>
+
+            <p class="switch-link">
+                Already have an account?
+                <button class="link-btn" @onclick="() => _showRegistration = false">Sign in</button>
+            </p>
+        }
+        else if (_showForgot)
+        {
+            <!-- FORGOT PASSWORD -->
+            <h2 class="modal-title">Forgot Password</h2>
+
+            <EditForm Model="@forgotModel" OnValidSubmit="HandleForgotPassword">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label class="lab">Enter your registered email</label>
+                    <InputText type="email" class="input-field" @bind-Value="forgotModel.Email" placeholder="Enter your email" />
+                    <ValidationMessage For="@(() => forgotModel.Email)" />
+                </div>
+
+                <div class="login-button" data-aos="fade-up" data-aos-delay="100">
+                    <button type="submit" class="btn-login">Send Reset Link</button>
+                </div>
+            </EditForm>
+
+            <p class="switch-link">
+                Remembered your password?
+                <button class="link-btn" @onclick="() => _showForgot = false">Back to Login</button>
+            </p>
+        }
+
+        <button class="close-btn" @onclick="Close">&times;</button>
+    </div>
+</div>
+
+@code {
+    private bool _isOpen = false;
+    private bool _showRegistration = false;
+    private bool _showForgot = false;
+    private bool _showPassword = false;
+    private bool _showConfirmPassword = false;
+    private bool RememberMe = false;
+    private bool AcceptTerms = false;
+
+    private LoginModel loginModel = new();
+    private RegisterModel registerModel = new();
+    private ForgotModel forgotModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var savedEmail = await JS.InvokeAsync<string>("localStorage.getItem", "savedEmail");
+        var savedPassword = await JS.InvokeAsync<string>("localStorage.getItem", "savedPassword");
+
+        if (!string.IsNullOrEmpty(savedEmail) && !string.IsNullOrEmpty(savedPassword))
+        {
+            loginModel.Email = savedEmail;
+            loginModel.Password = savedPassword;
+            RememberMe = true;
+        }
+    }
+
+    public void Open()
+    {
+        _isOpen = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        _isOpen = false;
+        _showRegistration = false;
+        _showForgot = false;
+        StateHasChanged();
+    }
+
+    private void TogglePassword() => _showPassword = !_showPassword;
+    private void ToggleConfirmPassword() => _showConfirmPassword = !_showConfirmPassword;
+
+    private async Task HandleLogin()
+    {
+        Console.WriteLine($"Login: {loginModel.Email}, Pass: {loginModel.Password}, RememberMe: {RememberMe}");
+
+        if (RememberMe)
+        {
+            await JS.InvokeVoidAsync("localStorage.setItem", "savedEmail", loginModel.Email);
+            await JS.InvokeVoidAsync("localStorage.setItem", "savedPassword", loginModel.Password);
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("localStorage.removeItem", "savedEmail");
+            await JS.InvokeVoidAsync("localStorage.removeItem", "savedPassword");
+        }
+
+        Close();
+    }
+
+    private void HandleRegister()
+    {
+        Console.WriteLine($"Register: {registerModel.FullName}, {registerModel.Email}, {registerModel.Password}, Confirm: {registerModel.ConfirmPassword}");
+        Close();
+    }
+
+    private void HandleForgotPassword()
+    {
+        Console.WriteLine($"Forgot password request for: {forgotModel.Email}");
+        // TODO: send reset link via API
+        _showForgot = false;
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "Email is required")]
+        [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|edu|gov|io|co|us|info|biz)$",
+            ErrorMessage = "Please enter a valid email (e.g. user@example.com)")]
+        public string Email { get; set; } = "";
+
+        [Required(ErrorMessage = "Password is required")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_-])[A-Za-z\d!@#$%^&*_-]{8,}$",
+            ErrorMessage = "Password must be at least 8 characters, contain upper, lower, number and special char.")]
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class RegisterModel
+    {
+        [Required(ErrorMessage = "Full name is required")]
+        public string FullName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required")]
+        [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|org|edu|gov|io|co|us|info|biz)$",
+            ErrorMessage = "Please enter a valid email (e.g. user@example.com)")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*_-])[A-Za-z\d!@#$%^&*_-]{8,}$",
+            ErrorMessage = "Password must be at least 8 characters, contain upper, lower, number and special char.")]
+        public string Password { get; set; } = string.Empty;
+
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        public string ConfirmPassword { get; set; } = string.Empty;
+    }
+
+    public class ForgotModel
+    {
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address")]
+        public string Email { get; set; } = string.Empty;
+    }
+}

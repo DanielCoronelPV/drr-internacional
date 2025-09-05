@@ -30,15 +30,27 @@
             </ul>
         </div>
 
-        <LanguageSelector />
+        <div>
+            <button class="nav-button" @onclick="OpenLogin">LogIn</button>
+
+            <LanguageSelector />
+        </div>
 
     </div>
 </nav>
+
+<LoginDialog @ref="loginDialog" />
 
 @code {
     [Parameter]
     public Empresa? EmpresaData { get; set; }
 
+    private LoginDialog? loginDialog;
+
+    private void OpenLogin()
+    {
+        loginDialog?.Open();
+    }
 
     protected override void OnInitialized()
     {
