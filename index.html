@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DRR Systemas - Internacional</title>
+    <!--<base href="/drr-internacional/" />-->
+    <base href="/" />
+    <link rel="icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/hero.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/shared.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/objetivo.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/productos.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/registro.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/contact.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+    <div id="app">
+        <!--<svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>-->
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script>
+        window.getBrowserLanguage = () => {
+            return navigator.language || navigator.userLanguage;
+        };
+    </script>
+
+    <script src="js/fab.js"></script>
+
+    <script src="js/login.js"></script>
+
+    <script>
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                const screenWidth = window.innerWidth;
+                const yOffset = screenWidth >= 1024 ? -70 : -60;
+
+                const y = el.getBoundingClientRect().top + window.scrollY + yOffset;
+
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+        }
+    </script>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const btnInicio = document.getElementById('btnInicio');
+            if (btnInicio) {
+                btnInicio.focus();
+                btnInicio.click();
+            }
+        });
+    </script>
+
+    <!-- Script para scroll y menú hamburguesa -->
+    <script>
+        window.addEventListener('scroll', function () {
+            const nav = document.getElementById('mainNav');
+            const logo = document.getElementById('logo');
+            if (nav) {
+                if (window.scrollY > 10) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }
+        });
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('show');
+        }
+    </script>
+
+    <script>
+        window.toggleMobileMenu = function () {
+            const navMenu = document.getElementById('navMenu');
+            if (!navMenu) return;
+
+            if (navMenu.classList.contains('expanded')) {
+                collapseMenu();
+            } else {
+                expandMenu();
+            }
+        }
+
+        function expandMenu() {
+            const navMenu = document.getElementById('navMenu');
+            if (!navMenu) return;
+
+            navMenu.classList.add('expanding');
+            navMenu.style.display = 'block';
+            const height = navMenu.scrollHeight + 'px';
+
+            navMenu.style.height = '0px';
+            navMenu.style.opacity = '0';
+
+            requestAnimationFrame(() => {
+                navMenu.style.height = '210px';
+                navMenu.style.opacity = '1';
+            });
+
+            navMenu.addEventListener('transitionend', function handler() {
+                navMenu.classList.remove('expanding');
+                navMenu.classList.add('expanded');
+                navMenu.style.height = '200px';
+                navMenu.removeEventListener('transitionend', handler);
+            });
+        }
+
+        function collapseMenu() {
+            const navMenu = document.getElementById('navMenu');
+            if (!navMenu) return;
+
+            navMenu.classList.remove('expanded');
+            navMenu.classList.add('collapsing');
+
+            const height = navMenu.scrollHeight + 'px';
+            navMenu.style.height = height;
+
+            requestAnimationFrame(() => {
+                navMenu.style.height = '0px';
+                navMenu.style.opacity = '0';
+            });
+
+            navMenu.addEventListener('transitionend', function handler() {
+                navMenu.classList.remove('collapsing');
+                navMenu.style.display = 'none';
+                navMenu.removeEventListener('transitionend', handler);
+            });
+        }
+
+        // Cerrar al hacer clic fuera
+        document.addEventListener('click', function (event) {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.getElementById('hamburgerBtn');
+
+            if (!navMenu || !hamburger) return;
+
+            if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                if (navMenu.classList.contains('expanded')) {
+                    collapseMenu();
+                }
+            }
+        });
+    </script>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="js/email.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="js/scroll.js"></script>
+
+    <script src="_framework/blazor.webassembly.js"></script>
+
+</body>
+
+</html>
