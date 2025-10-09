@@ -1,0 +1,84 @@
+﻿@page "/providers"
+@using DRR_PRESENTATION.Models
+@using DRR_PRESENTATION.Shared
+@inject DRR_PRESENTATION.Services.ProviderService ProviderService
+@inject NavigationManager NavManager
+
+<section class="provider-page">
+    <div class="container">
+        <button class="pd-btn-ghost" @onclick="Back"><i class="fa-solid fa-arrow-left"></i> Volver a Inicio</button>
+        <div class="provider-title-header">
+            <h2>Encuentra el Proveedor Perfecto</h2>
+            <div class="divider"></div>
+            <p>
+                Descubra los proveedores y vendedores de servicios mejor calificados para ayudar a hacer crecer su negocio
+            </p>
+        </div>
+
+        <div class="providers-filters">
+            <input type="text" class="search-input" placeholder="Buscar proveedores, servicios o palabras clave..."
+                   @bind="searchTerm" @bind:event="oninput" />
+
+            <select class="category-select" @bind="selectedCategory">
+                <option value="all">Todos</option>
+                @foreach (var category in Categories)
+                {
+                    <option value="@category">@category</option>
+                }
+            </select>
+        </div>
+
+        <div class="results-info">
+            <p>@FilteredProviders.Count Proveedor@(FilteredProviders.Count != 1 ? "es" : "") Encontrado</p>
+            <p class="results-sub">@GetResultsText()</p>
+        </div>
+
+        <div class="providers-grid">
+            @foreach (var provider in FilteredProviders)
+            {
+                <ProviderCard Provider="provider" />
+            }
+        </div>
+    </div>
+</section>
+
+@if (FilteredProviders.Count == 0)
+{
+    <div class="no-results">
+        <h3>No providers found</h3>
+        <p>Try adjusting your search terms or category filter to find what you're looking for.</p>
+    </div>
+}
+
+@code {
+    private string searchTerm = string.Empty;
+    private string selectedCategory = "all";
+    private List<Provider> ProvidersList = new();
+
+    protected override void OnInitialized()
+    {
+        ProvidersList = ProviderService.GetProviders();
+    }
+
+    private IEnumerable<string> Categories => new HashSet<string>(ProvidersList.Select(p => p.Category));
+
+    private List<Provider> FilteredProviders => ProvidersList
+        .Where(p =>
+            (p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+             p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+             p.Services.Any(s => s.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)))
+            && (selectedCategory == "all" || p.Category == selectedCategory)
+        ).ToList();
+
+    private string GetResultsText()
+    {
+        var text = "";
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+            text += $"Results for \"{searchTerm}\"";
+        if (selectedCategory != "all")
+            text += $" En {selectedCategory}";
+        return text;
+    }
+
+    private void Back() => NavManager.NavigateTo("/");
+}

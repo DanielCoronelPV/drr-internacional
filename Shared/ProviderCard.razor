@@ -1,0 +1,68 @@
+﻿@using DRR_PRESENTATION.Models
+@inject NavigationManager NavManager
+
+<div class="provider-card">
+    <div class="provider-card-overlay"></div>
+
+    <div class="provider-card-content">
+        <div class="provider-header">
+            <div class="logo-container">
+                <img src="@Provider.LogoUrl" alt="@Provider.Name logo" class="provider-logo" />
+                <div class="logo-star">★</div>
+            </div>
+            <div class="provider-info">
+                <h3>@Provider.Name</h3>
+                <span class="badge">@Provider.Category</span>
+
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="rating-value">@Provider.Rating</span>
+                    <span class="reviews">(@Provider.ReviewCount reviews)</span>
+                </div>
+            </div>
+        </div>
+
+        <p class="description">@Provider.Description</p>
+
+        <div class="details">
+            <div class="detail-item">
+                📍 <span>@Provider.Location</span>
+            </div>
+            <div class="detail-item">
+                🌐 <span>@Provider.Pricing.Range</span>
+            </div>
+        </div>
+
+        <div class="services">
+            <h4>Servicios Ofrecidos</h4>
+            @foreach (var service in Provider.Services.Take(3))
+            {
+                <div class="service-item">
+                    <div class="dot"></div>
+                    <span>@service</span>
+                </div>
+            }
+
+            @if (Provider.Services.Count > 3)
+            {
+                <div class="service-item more">
+                    <div class="dot muted"></div>
+                    <span>+@(Provider.Services.Count - 3) more services</span>
+                </div>
+            }
+        </div>
+
+        <div class="card-buttons" data-aos="fade-up" data-aos-delay="100">
+            <button @onclick="NavigateToProvider" class="card-btn-outline">Ver Todos los Detalles <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Provider Provider { get; set; } = new();
+
+    private void NavigateToProvider()
+    {
+        NavManager.NavigateTo($"/provider/{Provider.Id}");
+    }
+}
