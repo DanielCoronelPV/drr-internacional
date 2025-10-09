@@ -1,6 +1,7 @@
 ﻿@using DRR_PRESENTATION.Models
 
 @inject TranslationService Translator
+@inject NavigationManager NavManager
 
 <nav id="mainNav" data-aos="fade-down" data-aos-duration="1000" class="navbar">
     <div class="navbar-container">
@@ -22,7 +23,7 @@
         <!-- Menú de navegación -->
         <div id="navMenu" class="nav-menu">
             <ul>
-                <li><button id="btnInicio" onclick="scrollToSection('inicio')" class="nav-button">@((MarkupString)Translator.Translate("inicio"))</button></li>
+                <li><button id="btnInicio" @onclick="Back" class="nav-button">@((MarkupString)Translator.Translate("inicio"))</button></li>
                 <li><button onclick="scrollToSection('objetivo')" class="nav-button">@((MarkupString)Translator.Translate("objetivo"))</button></li>
                 <li><button onclick="scrollToSection('productos')" class="nav-button">@((MarkupString)Translator.Translate("productos"))</button></li>
                 <li><button onclick="scrollToSection('registro')" class="nav-button">@((MarkupString)Translator.Translate("registro"))</button></li>
@@ -61,4 +62,6 @@
     {
         Translator.OnLanguageChanged -= StateHasChanged;
     }
+
+    private void Back() => NavManager.NavigateTo("/");
 }

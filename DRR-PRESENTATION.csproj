@@ -21,8 +21,20 @@
     <Content Update="wwwroot\assets\i18n\zh-CN.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\assets\img\faviconDrr.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\assets\img\fondo-home.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\img\prestadores\zanotelli-logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\img\prestadores\Zanotelli-piedras-preciosas.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\img\prestadores\zanotelli.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\assets\img\products\aceite-oliva.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -50,6 +62,12 @@
     </Content>
     <Content Update="wwwroot\assets\img\products\vinos.webp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\pdf\prestadores\PEDRAS PRECIOSAS -  ZANOTELLI INTERNATIONAL CONSULTANCI.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\assets\pdf\prestadores\PLATAFORMA DE DESCARGA TRASEIRA BAOSHENG -  ZANOTELLI INTERNATIONAL CONSULTANCI.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\css\app.css">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

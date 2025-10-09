@@ -1,0 +1,159 @@
+﻿@page "/provider/{id}"
+@using DRR_PRESENTATION.Models
+@inject DRR_PRESENTATION.Services.ProviderService ProviderService
+@inject NavigationManager NavManager
+@inject IJSRuntime JS
+
+@code {
+    [Parameter] public string id { get; set; } = string.Empty;
+    private Provider? provider;
+
+    protected override void OnParametersSet()
+    {
+        provider = ProviderService.GetProviderById(id);
+    }
+
+    private void Back() => NavManager.NavigateTo("/providers");
+
+    private async Task OpenWhatsApp()
+    {
+        var phone = "5549988081444";
+        var url = $"https://wa.me/{phone}";
+        await JS.InvokeVoidAsync("open", url, "_blank");
+    }
+
+    private async Task OpenPDF(string pdfUrl)
+    {
+        if (!string.IsNullOrWhiteSpace(pdfUrl))
+        {
+            await JS.InvokeVoidAsync("open", pdfUrl, "_blank");
+        }
+    }
+}
+
+@if (provider == null)
+{
+    <div class="pd-notfound">
+        <h2>Provider Not Found</h2>
+        <button class="pd-btn" @onclick="Back"><i class="fa-solid fa-arrow-left"></i> Volver a Proveedores</button>
+    </div>
+}
+else
+{
+    <div class="pd-page">
+        <!-- Header -->
+        <div class="pd-header">
+            <div class="pd-container header-container">
+                <button class="details-btn-ghost" @onclick="Back"><i class="fa-solid fa-arrow-left"></i> Volver a Proveedores</button>
+
+                <div class="pd-header-main">
+                    <img class="pd-logo" src="@provider.LogoUrl" alt="@provider.Name logo" />
+                    <div class="pd-header-info">
+                        <div class="pd-title-row">
+                            <h1>@provider.Name</h1>
+                            <span class="pd-badge">@provider.Category</span>
+                        </div>
+                        <p class="pd-lead">@provider.Description</p>
+
+                        <div class="pd-meta-row">
+                            <div class="pd-meta-item"><p>&#9733;</p> <strong>@provider.Rating</strong> <span class="pd-muted">(@provider.ReviewCount reviews)</span></div>
+                            <div class="pd-meta-item"><i class="fas fa-location-dot"></i> @provider.Location</div>
+                            <div class="pd-meta-item">&#128178; @provider.Pricing.Range</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="pd-container pd-body-grid">
+            <!-- Main content -->
+            <main class="pd-main-col">
+                <!-- Services -->
+                <section class="pd-card">
+                    <div class="pd-card-header">
+                        <h3>
+                            Servicios Ofrecidos
+                        </h3>
+                    </div>
+                    <div class="pd-card-body pd-services-grid">
+                        @foreach (var s in provider.Services)
+                        {
+                            <div class="pd-service-pill"><span class="pd-dot"></span>@s</div>
+                        }
+                    </div>
+                </section>
+
+                <!-- Features -->
+                <section class="pd-card">
+                    <div class="pd-card-header">
+                        <h3>
+                            Características Clave
+                        </h3>
+                    </div>
+                    <div class="pd-card-body pd-features-grid">
+                        @foreach (var f in provider.Features)
+                        {
+                            <div class="pd-feature-badge">@f</div>
+                        }
+                    </div>
+                </section>
+
+                <!-- Portfolio -->
+                <section class="pd-card">
+                    <div class="pd-card-header">
+                        <h3 class="titleh3">Portfolio</h3>
+                        <p class="pd-muted">Proyectos recientes e historias de éxito</p>
+                    </div>
+                    <div class="pd-card-body pd-portfolio-grid">
+                        @foreach (var p in provider.Portfolio)
+                        {
+                            <article class="pd-project">
+                                <img src="@p.Image" alt="@p.Title" />
+                                <div class="pd-project-info">
+                                    <h4>@p.Title</h4>
+                                    <p class="pd-muted">@p.Description</p>
+                                    @if (!string.IsNullOrEmpty(p.URLpdf))
+                                    {
+                                        <button class="card-btn-outline" @onclick="() => OpenPDF(p.URLpdf)">
+                                            <i class="fa-regular fa-file-pdf"></i> Ver / Descargar
+                                        </button>
+                                    }
+                                </div>
+                            </article>
+                        }
+                    </div>
+                </section>
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="pd-side-col">
+                <div class="right-card pd-contact-card">
+                    <div class="pd-card-header"><h3>Ponte en Contacto</h3></div>
+                    <div class="pd-card-body pd-contact-body">
+                        <div class="pd-contact-row">&#128231; <span>@provider.Contact.Email</span></div>
+                        <div class="pd-contact-row">&#128222; <span>@provider.Contact.Phone</span></div>
+                        <div class="pd-contact-row">&#127760; <a href="@provider.Contact.Website" target="_blank" rel="noopener noreferrer">@provider.Contact.Website</a></div>
+
+                        <hr />
+                        <button class="card-btn-outline" @onclick="OpenWhatsApp"><i class="fa-brands fa-whatsapp"></i>Contactar Proveedor</button>
+                    </div>
+                </div>
+
+                <div class="right-card">
+                    <div class="pd-card-header"><h3>Precios</h3></div>
+                    <div class="pd-card-body">
+                        <div class="pd-price-row">
+                            <span class="pd-muted">Modelo de precio:</span>
+                            <strong class="pd-capitalize">@provider.Pricing.Type</strong>
+                        </div>
+                        <div class="pd-price-row">
+                            <span class="pd-muted">Rango de tarifas:</span>
+                            <strong>@provider.Pricing.Range</strong>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+}

@@ -258,24 +258,6 @@ body, html {
     height: 30px;
 }
 
-/*.btn-agendar {
-    display: block;
-    padding: 0.5rem 1.5rem;
-    border-radius: 8px;
-    border: groove 1px #a6b0fb;
-    background: white;
-    color: #393185;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.4s ease !important;
-    cursor: pointer;
-}
-
-    .btn-agendar:hover {
-        background: #a6b0fb;
-    }*/
-
 .submit-button {
     background: transparent;
     display: flex;

@@ -171,7 +171,14 @@
 
 .banner-position {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+@media (min-width: 640px) {
+    .banner-position {
+        flex-direction: row;
+    }
 }
 
 .natural-products-banner {
@@ -200,6 +207,12 @@
     border-radius: 50%;
 }
 
+.right-arrow {
+    left: 1rem;
+    color: #40916c;
+    font-weight: bold;
+}
+
 .animate {
     animation: pulse 1.5s infinite;
 }
@@ -215,3 +228,33 @@
         transform: scale(1.2);
     }
 }
+
+.providers-button {
+    margin-top: 3rem;
+    display: inline-flex;
+    background: transparent;
+    height: 3rem;
+    width: auto;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0rem 1.5rem;
+    border: 2px solid #4CAF50;
+    color: #4CAF50 !important;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    text-decoration: none !important;
+}
+
+    .providers-button:hover {
+        background: #e4ffe0;
+        transform: translateY(-2px) !important;
+    }
+
+    .providers-button span {
+        margin-left: 0.5rem !important;
+        color: #4CAF50 !important;
+    }
