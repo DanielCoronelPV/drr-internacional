@@ -14,6 +14,7 @@
     }
 
     private void Back() => NavManager.NavigateTo("/drr-internacional/providers");
+    // private void Back() => NavManager.NavigateTo("/providers");
 
     private async Task OpenWhatsApp()
     {
@@ -28,6 +29,13 @@
         {
             await JS.InvokeVoidAsync("open", pdfUrl, "_blank");
         }
+    }
+
+    private bool isSidebarOpen = false;
+
+    private void ToggleSidebar()
+    {
+        isSidebarOpen = !isSidebarOpen;
     }
 }
 
@@ -56,9 +64,9 @@ else
                         <p class="pd-lead">@provider.Description</p>
 
                         <div class="pd-meta-row">
-                            <div class="pd-meta-item"><p>&#9733;</p> <strong>@provider.Rating</strong> <span class="pd-muted">(@provider.ReviewCount reviews)</span></div>
+                            <div class="pd-meta-item"><p class="no-margin color-p"><i class="fa-solid fa-star-half-stroke"></i></p> <p class="no-margin">@provider.Rating</p> <p class="no-margin pd-muted">(@provider.ReviewCount reviews)</p></div>
                             <div class="pd-meta-item"><i class="fas fa-location-dot"></i> @provider.Location</div>
-                            <div class="pd-meta-item">&#128178; @provider.Pricing.Range</div>
+                            <div class="pd-meta-item"><i class="item-color-dollar fa-solid fa-dollar-sign"></i> @provider.Pricing.Range</div>
                         </div>
                     </div>
                 </div>
@@ -126,17 +134,27 @@ else
                 </section>
             </main>
 
-            <!-- Sidebar -->
-            <aside class="pd-side-col">
-                <div class="right-card pd-contact-card">
+            <!-- Botón flotante (solo móvil) -->
+            <button class="pd-mobile-toggle" @onclick="ToggleSidebar">
+                <i class="fa-regular fa-address-book"></i>
+            </button>
+
+            <!-- Sidebar flotante / fijo -->
+            <aside class="pd-side-col @(isSidebarOpen ? "open" : "")">
+                <div class="right-card right-card-top pd-contact-card">
                     <div class="pd-card-header"><h3>Ponte en Contacto</h3></div>
                     <div class="pd-card-body pd-contact-body">
                         <div class="pd-contact-row">&#128231; <span>@provider.Contact.Email</span></div>
                         <div class="pd-contact-row">&#128222; <span>@provider.Contact.Phone</span></div>
-                        <div class="pd-contact-row">&#127760; <a href="@provider.Contact.Website" target="_blank" rel="noopener noreferrer">@provider.Contact.Website</a></div>
+                        <div class="pd-contact-row">
+                            &#127760;
+                            <a href="@provider.Contact.Website" target="_blank" rel="noopener noreferrer">@provider.Contact.Website</a>
+                        </div>
 
                         <hr />
-                        <button class="card-btn-outline" @onclick="OpenWhatsApp"><i class="fa-brands fa-whatsapp"></i>Contactar Proveedor</button>
+                        <button class="card-btn-outline" @onclick="OpenWhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>Contactar Proveedor
+                        </button>
                     </div>
                 </div>
 
@@ -154,6 +172,7 @@ else
                     </div>
                 </div>
             </aside>
+
         </div>
     </div>
 }
