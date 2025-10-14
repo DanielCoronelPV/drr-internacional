@@ -23,7 +23,7 @@ namespace DRR_PRESENTATION.Services
                 },
                 Contact = new ContactInfo
                 {
-                    Email = "info@zanotelli.com.br",
+                    Email = "consultoria@zanotelli.com.br",
                     Phone = "+55 (49) 98808-1444",
                     Website = "https://zanotelli.com.br"
                 },
